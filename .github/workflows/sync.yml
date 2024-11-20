@@ -5,9 +5,9 @@ on:
   # 手动事件，如果需要手动触发把 workflow_dispatch 前的#去掉
   # workflow_dispatch:
   # 计划事件
-  schedule:
+  #schedule:
     # 每天北京时间9点运行
-    - cron:  '40 8 * * *'
+    #- cron:  '40 8 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
