@@ -1,0 +1,17 @@
+name: Sync with Gitee
+
+on:
+  schedule:
+    - cron: '11 07 * * *' #另一个action每天21:45自动更新, 22:45自动同步(UTC时间)
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Sync with Gitee
+      run: |
+        git remote add gitee https://tang_sj:GITEE_TOKEN@gitee.com/tang_sj/IPTV.git
+        git push --force gitee main
