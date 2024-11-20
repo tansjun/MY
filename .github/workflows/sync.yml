@@ -3,7 +3,7 @@ on:
   # 如果需要 PR 触发把 push 前的#去掉
   # push:
   # 手动事件，如果需要手动触发把 workflow_dispatch 前的#去掉
-  # workflow_dispatch:
+  workflow_dispatch:
   # 计划事件
   #schedule:
     # 每天北京时间9点运行
