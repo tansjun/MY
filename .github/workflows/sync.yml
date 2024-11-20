@@ -1,0 +1,24 @@
+name: Sync to Gitee
+
+on:
+  schedule:
+    - cron: '45 21 * * *'
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync to Gitee
+        uses: tangsj
+        env:
+          # 在 Settings->Secrets 配置 GITEE_PRIVATE_KEY
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+        with:
+          # GitHub 源仓库地址
+          source-repo: git@github.com:tansjun/IPTV.git
+          # Gitee 目标仓库地址
+          destination-repo: git@gitee.com:tang_sj/IPTV.git
+          
