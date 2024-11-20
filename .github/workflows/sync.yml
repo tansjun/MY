@@ -2,7 +2,7 @@ name: Sync to Gitee
 
 on:
   schedule:
-    - cron: '45 21 * * *'
+    - cron: '05 08 * * *'
   workflow_dispatch:
     branches:
       - main
