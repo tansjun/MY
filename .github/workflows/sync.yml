@@ -1,4 +1,4 @@
-name: Sync to Gitee
+name: gitee-sync
 
 on:
   schedule:
@@ -8,17 +8,29 @@ on:
       - main
 
 jobs:
-  build:
+  repo-sync:
+    env:
+      dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+      dst_token: ${{ secrets.GITEE_TOKEN }}
+      gitee_user: ${{ secrets.GITEE_USER }}
     runs-on: ubuntu-latest
     steps:
-      - name: Sync to Gitee
-        uses: tangsj
-        env:
-          # 在 Settings->Secrets 配置 GITEE_PRIVATE_KEY
-          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+      - uses: actions/checkout@v2
         with:
-          # GitHub 源仓库地址
-          source-repo: git@github.com:tansjun/IPTV.git
-          # Gitee 目标仓库地址
-          destination-repo: git@gitee.com:tang_sj/IPTV.git
+          persist-credentials: false
           
+      - name: sync github -> gitee
+        uses: tangsj
+        if: env.dst_key && env.dst_token && env.gitee_user
+        with:
+          # 必选，需要同步的 Github 用户（源）
+          src: 'github/${{ github.repository_owner }}'
+          # 必选，需要同步到的 Gitee 用户（目的）
+          dst: 'gitee/${{ secrets.GITEE_USER }}'
+          # 必选，Gitee公钥对应的私钥，https://gitee.com/profile/sshkeys
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          # 必选，Gitee对应的用于创建仓库的token，https://gitee.com/profile/personal_access_tokens
+          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          # account_type: org
+          # 直接取当前项目的仓库名
+          static_list: ${{ github.event.repository.name }}
