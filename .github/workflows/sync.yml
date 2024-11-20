@@ -2,7 +2,7 @@ name: Sync with Gitee
 
 on:
   schedule:
-    - cron: '50 07 * * *' #另一个action每天21:45自动更新, 22:45自动同步(UTC时间)
+    - cron: '52 07 * * *' #另一个action每天21:45自动更新, 22:45自动同步(UTC时间)
 
 jobs:
   sync:
