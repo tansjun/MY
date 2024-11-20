@@ -1,13 +1,9 @@
 name: Gitee repos mirror periodic job
 on:
-  # 如果需要 PR 触发把 push 前的#去掉
-  # push:
-  # 手动事件，如果需要手动触发把 workflow_dispatch 前的#去掉
+  schedule:
+    - cron: '45 22 * * *'
   workflow_dispatch:
-  # 计划事件
-  #schedule:
-    # 每天北京时间9点运行
-    #- cron:  '40 8 * * *'
+
 jobs:
   build:
     runs-on: ubuntu-latest
