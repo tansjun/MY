@@ -7,7 +7,7 @@ on:
   # 计划事件
   schedule:
     # 每天北京时间9点运行
-    - cron:  '0 1 * * *'
+    - cron:  '40 8 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
