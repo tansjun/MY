@@ -1,7 +1,7 @@
 name: Gitee repos mirror periodic job
 on:
-  schedule:
-    - cron: '3 9 * * *'
+  #schedule:
+  #  - cron: '3 9 * * *'
   workflow_dispatch:
 
 jobs:
