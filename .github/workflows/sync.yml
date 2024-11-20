@@ -14,7 +14,7 @@ jobs:
         # 必选，需要同步的Github用户（源）
         src: github/tansjun
         # 必选，需要同步到的Gitee的用户（目的）
-        dst: 'gitee/${{ secrets.GITEE_USER }}'
+        dst: gitee/tang_sj
         # 必选，Gitee公钥对应的私钥，https://gitee.com/profile/sshkeys
         dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
         # 必选，Gitee对应的用于创建仓库的token，https://gitee.com/profile/personal_access_tokens
