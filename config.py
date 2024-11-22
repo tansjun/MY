@@ -1,6 +1,7 @@
 ip_version_priority = "ipv6"
 
 source_urls = [
+    "https://ghproxy.net/raw.githubusercontent.com/Guovin/TV/gd/output/result.txt",
     "http://175.178.251.183:6689/aktvlive.txt",
     "https://live.fanmingming.com/tv/m3u/ipv6.m3u",
     "https://raw.githubusercontent.com/yuanzl77/IPTV/main/直播/央视频道.txt",
@@ -22,7 +23,13 @@ source_urls = [
     "https://fm1077.serv00.net/SmartTV.m3u",
     "https://raw.githubusercontent.com/ssili126/tv/main/itvlist.txt",
     "https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/merged_output.txt",
-    "https://live.zbds.top/tv/iptv6.txt"
+    "https://d.kstore.dev/download/8344/dslb.txt",
+    "https://gongdian.top/tv/txt",
+    "http://122.228.85.203:5988/uploads/tvbox.tv.txt",
+    "http://8.138.7.223/live.txt",
+    "https://live.zbds.top/tv/iptv6.txt",
+    "https://live.zbds.top/tv/iptv4.txt",
+    "https://live.kilvn.com/iptv.m3u"
 ]
 
 url_blacklist = [
