@@ -19,5 +19,5 @@ jobs:
         dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
         # 必选，Gitee对应的用于创建仓库的token，https://gitee.com/profile/personal_access_tokens
         dst_token:  ${{ secrets.GITEE_TOKEN }}
-        white_list: "IPTV"
-        black_list: "hub-mirror-action, MY"
+        white_list: "MY"
+        black_list: "hub-mirror-action, IPTV"
