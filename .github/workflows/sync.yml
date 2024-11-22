@@ -16,8 +16,8 @@ jobs:
         # 必选，需要同步到的Gitee的用户（目的）
         dst: gitee/tang_sj
         # 必选，Gitee公钥对应的私钥，https://gitee.com/profile/sshkeys
-        dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+        dst_key: ${{ secrets.GITEE_PRIVATE_KEY_MY }}
         # 必选，Gitee对应的用于创建仓库的token，https://gitee.com/profile/personal_access_tokens
-        dst_token:  ${{ secrets.GITEE_TOKEN }}
+        dst_token:  ${{ secrets.GITEE_TOKEN_MY }}
         white_list: "MY"
         black_list: "hub-mirror-action, IPTV"
