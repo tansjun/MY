@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Mirror the Github organization repos to Gitee.
-      uses: tangsj_action
+      uses: tansjun/hub-mirror-action@master
       with:
         # 必选，需要同步的Github用户（源）
         src: github/tansjun/IPTV
