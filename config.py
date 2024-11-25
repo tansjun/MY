@@ -5,7 +5,7 @@ source_urls = [
     "https://wzsvip.github.io/ipv6.m3u",
     "https://wzsvip.github.io/ipv4.m3u",
     "https://agit.ai/Yoursmile7/TVBox/raw/branch/master/live.txt",
-    "https://weixine.net/tv/ysclive.txt
+    "https://weixine.net/tv/ysclive.txt",
     "https://xhdwc.tk/tvlive.txt",
     "https://ghp.ci/https://raw.githubusercontent.com/fanmingming/live/refs/heads/main/tv/m3u/ipv6.m3u",
     "https://gh-proxy.com/https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/cnTV_AutoUpdate.m3u8",
