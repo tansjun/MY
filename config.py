@@ -4,19 +4,13 @@ source_urls = [
     "https://mirror.ghproxy.com/https://raw.githubusercontent.com/joevess/IPTV/main/home.m3u8",
     "https://wzsvip.github.io/ipv6.m3u",
     "https://wzsvip.github.io/ipv4.m3u",
-    "https://www.huichunniao.cn/xh/lib/live.txt",
     "https://agit.ai/Yoursmile7/TVBox/raw/branch/master/live.txt",
-    "https://ghproxy.net/https://raw.githubusercontent.com/yyfxz/qqtv/main/%E8%82%A5%E7%8C%AB/live.txt",
-    "https://jihulab.com/owen2000wy/owentv/-/raw/main/HP20230319.txt",
-    "http://home.jundie.top:81/Cat/tv/live.txt",
     "https://weixine.net/tv/ysclive.txt",
-    "http://8.210.232.168/xclive.txt",
     "https://xhdwc.tk/tvlive.txt",
     "https://ghp.ci/https://raw.githubusercontent.com/fanmingming/live/refs/heads/main/tv/m3u/ipv6.m3u",
     "https://gh-proxy.com/https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/cnTV_AutoUpdate.m3u8",
     "https://ghproxy.net/raw.githubusercontent.com/Guovin/TV/gd/output/result.m3u",
     "https://live.iptv365.org/live.txt",
-    "https://live.iptv365.org/live.m3u",
     "http://aktv.top/live.m3u"
 ]
 
