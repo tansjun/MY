@@ -2,7 +2,7 @@
 请阅读,https://liuliuliu.tv/api/channels/1997/stream
 yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2025-08-27,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2025-08-28,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 央视频道,#genre#
 CCTV1,http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226231/index.m3u8$LR•IPV4『线路1』
 CCTV1,http://183.196.25.171:808/hls/1/index.m3u8$LR•IPV4『线路2』
@@ -105,9 +105,10 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 安徽卫视,http://api2.52tb.xyz/info?id=33&token=20230326xflvzc$LR•IPV4『线路2』
 重庆卫视,http://api2.52tb.xyz/info?id=37&token=20230326xflvzc$LR•IPV4『线路1』
 重庆卫视,P2p://generationnexxxt.com:19806/fc5528b603de46ef8f88e59b352e64ed$LR•IPV4『线路2』
-重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202508261527/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4『线路3』
+重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202508270820/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4『线路3』
 四川卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020407a4a109f5dfc6f26dbf5eb.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 四川卫视,http://api2.52tb.xyz/info?id=39&token=20230326xflvzc$LR•IPV4『线路2』
+四川卫视,https://piccpndks.v.kcdnvip.com/audio/sichuan_2/index.m3u8$LR•IPV4『线路3』
 东南卫视,http://api2.52tb.xyz/info?id=29&token=20230326xflvzc$LR•IPV4『线路1』
 东南卫视,P2p://generationnexxxt.com:19806/1ca66ef76c0e4f9c9b98d078c45cbf54$LR•IPV4『线路2』
 深圳卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020289041678b7585eb32637331.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
@@ -130,7 +131,7 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 河北卫视,P2p://generationnexxxt.com:19806/7b7c9f60693b406293ed5ea3e8effbca$LR•IPV4『线路3』
 河南卫视,http://cyz32.livehbindex.hbcatv.cn/live/500000201d7c47a8b9b127d69fb816ac.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 河南卫视,http://api2.52tb.xyz/info?id=31&token=20230326xflvzc$LR•IPV4『线路2』
-河南卫视,http://119.147.118.51/tvcdn.stream3.hndt.com/tv/65c4a6d5017e1000b2b6ea2500000000_transios/playlist.m3u8?wsSecret=cd488b289eca5d6281adeb70c8163be9&wsTime=1756207372&wsSession=053c4abd8e6b0e2e4f59d49b-175619969206308&wsIPSercert=f1ed5e80c31ab65580d88c6bbb451005&wsiphost=local&wsBindIP=1$LR•IPV4『线路3』
+河南卫视,http://tvcdn.stream3.hndt.com/tv/65c4a6d5017e1000b2b6ea2500000000_transios/playlist.m3u8?wsSecret=58c641499b506942792e1281e1655aa2&wsTime=1756266471$LR•IPV4『线路3』
 黑龙江卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020281749ed995f2824759051fa.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 黑龙江卫视,http://api2.52tb.xyz/info?id=41&token=20230326xflvzc$LR•IPV4『线路2』
 黑龙江卫视,P2p://generationnexxxt.com:19806/aa707c237a8b488e9438372488afd20b$LR•IPV4『线路3』
@@ -169,7 +170,7 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 云南卫视,P2p://generationnexxxt.com:19806/b6d23302db664d50b16534639b529791$LR•IPV4『线路3』
 西藏卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020816449349b10593cfdde8311.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 西藏卫视,http://api2.52tb.xyz/info?id=52&token=20230326xflvzc$LR•IPV4『线路2』
-西藏卫视,https://tv.vtibet.cn/live/h701F9MpxzPDyE.m3u8?secret=1135cf7dff9455894f35eac7381352b5&time=68ad7b93$LR•IPV4『线路3』
+西藏卫视,https://tv.vtibet.cn/live/h701F9MpxzPDyE.m3u8?secret=1f68d85df46b9744fa9110ea0459926d&time=68ae5a6c$LR•IPV4『线路3』
 兵团卫视,http://39.134.24.162/dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226214/index.m3u8$LR•IPV4『线路1』
 兵团卫视,http://cyz32.livehbindex.hbcatv.cn/live/500000200a7e4caf973012bf85f33406.m3u8?bitrate=2300&pt=5$LR•IPV4『线路2』
 安多卫视,http://stream.qhbtv.com/adws/sd/live.m3u8$LR•IPV4
@@ -184,8 +185,10 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 凤凰中文,mitv://generationnexxxt.com:19806/633d55a11b1041cbb5506d87c9af5cef$LR•IPV4『线路1』
 凤凰中文,http://www.372583307.top:4022/udp/233.50.200.191:5140$LR•IPV4『线路2』
 凤凰中文,http://playtv-live.ifeng.com/live/06OLEGEGM4G.m3u8$LR•IPV4『线路3』
+凤凰中文,http://api.mg.itv888.cn:8080/hls/2f80047f91e/index.m3u8$LR•IPV4『线路4』
 凤凰资讯,http://www.372583307.top:4022/udp/233.50.200.192:5140$LR•IPV4『线路1』
 凤凰资讯,http://r.jdshipin.com/0Rp07$LR•IPV4『线路2』
+凤凰资讯,http://api.mg.itv888.cn:8080/hls/11ef1dc70d8/index.m3u8$LR•IPV4『线路3』
 凤凰香港,http://113.117.74.20:8081/hls/38/index.m3u8$LR•IPV4
 香港卫视,http://cctvtxyh5c.liveplay.myqcloud.com/cstv/xianggangweishi_2/index.m3u8$LR•IPV4
 TVBS亚洲,http://38.64.72.148:80/hls/modn/list/4005/chunklist1.m3u8$LR•IPV4『线路1』
@@ -213,7 +216,7 @@ J2,P2p://generationnexxxt.com:19806/fd76c6fe901545c5b39543824e25c80b$LR•IPV4�
 动漫秀场,https://live.v1.mk/api/bestv.php?id=dmxc8m/8000000$LR•IPV4『线路1』
 动漫秀场,P2p://generationnexxxt.com:19806/1b00c8eba9624626852599a2a8383aa4$LR•IPV4『线路2』
 金鹰卡通,http://223.151.51.27:85/tsfile/live/1016_1.m3u8?key=txiptv&playlive=1&authid=0$LR•IPV4『线路1』
-金鹰卡通,http://phoneqq.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwMy4zOS4yMjYuMTAwJnRlcm09NSZxaWQ9JmNkbmV4X2lkPXFxX3Bob25lX2xpdmUmY2hzPSZkZWY9MSZzPTFiNzMxNTMzMDQzODVlMDY3NmE5ZmU1YjFhODA5MjAxJnVpZD0mdXVpZD0wOTNmZmQ0ZDkxN2ZiODJhNmQ5NGEyYzJlYTg2YmYxYS02NzI3ZTI2NCZ2PTImYXM9MCZlcz0xNzU2MjE5ODcw/JYKTMPP360.m3u8$LR•IPV4『线路2』
+金鹰卡通,http://phonetx.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwMy4zOS4yMjYuMTAwJnRlcm09NSZxaWQ9JmNkbmV4X2lkPXR4X3Bob25lX2xpdmUmY2hzPSZkZWY9MSZzPWQ0NTdlYWJlZTQ4M2Y2NDYyNjAzMTYwODk0NmNhY2NhJnVpZD0mdXVpZD1jMTI3NjZlOTllYmFjNTJjOGFiMTc2NjE0MGNjMDBhOC02NzI3ZTI2NCZ2PTImYXM9MCZlcz0xNzU2Mjc3OTA2/JYKTMPP360.m3u8$LR•IPV4『线路2』
 影视频道,#genre#
 CHC动作电影,P2p://generationnexxxt.com:19806/855bc155c26d489698a02a890f1684a2$LR•IPV4
 CHC高清电影,http://www.51nas.top:4022/udp/239.81.0.240:4056$LR•IPV4『线路1』
