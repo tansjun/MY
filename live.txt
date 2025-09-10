@@ -2,7 +2,7 @@
 请阅读,https://liuliuliu.tv/api/channels/1997/stream
 yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2025-09-10,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2025-09-11,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 央视频道,#genre#
 CCTV1,http://dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226231/index.m3u8$LR•IPV4『线路1』
 CCTV1,http://183.196.25.171:808/hls/1/index.m3u8$LR•IPV4『线路2』
@@ -95,7 +95,7 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 浙江卫视,http://hw-m-l.cztv.com/channels/lantian/channel001/1080p.m3u8$LR•IPV4『线路2』
 浙江卫视,http://api2.52tb.xyz/info?id=22&token=20230326xflvzc$LR•IPV4『线路3』
 浙江卫视,P2p://generationnexxxt.com:19806/603f7c6b86ee4048b4da0f8e99577c1c$LR•IPV4『线路4』
-浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1757444719-62d3494901d233f0a4341791515fb938-0-ad99e1d63874fdb7942c87fd2e0e83f4$LR•IPV4『线路5』
+浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1757532914-d09118f04352391d7ffb544cdcb02262-0-e07467e0305ee2c9cd365e2a7d6b78e5$LR•IPV4『线路5』
 东方卫视,http://api2.52tb.xyz/info?id=24&token=20230326xflvzc$LR•IPV4『线路1』
 东方卫视,P2p://generationnexxxt.com:19806/9f2f68784ddd4998b723bce328f15499$LR•IPV4『线路2』
 北京卫视,http://api2.52tb.xyz/info?id=25&token=20230326xflvzc$LR•IPV4『线路1』
@@ -106,7 +106,7 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 安徽卫视,http://api2.52tb.xyz/info?id=33&token=20230326xflvzc$LR•IPV4『线路2』
 重庆卫视,http://api2.52tb.xyz/info?id=37&token=20230326xflvzc$LR•IPV4『线路1』
 重庆卫视,P2p://generationnexxxt.com:19806/fc5528b603de46ef8f88e59b352e64ed$LR•IPV4『线路2』
-重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202509100402/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4『线路3』
+重庆卫视,http://p.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202509110305/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4『线路3』
 四川卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020407a4a109f5dfc6f26dbf5eb.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 四川卫视,http://api2.52tb.xyz/info?id=39&token=20230326xflvzc$LR•IPV4『线路2』
 东南卫视,http://api2.52tb.xyz/info?id=29&token=20230326xflvzc$LR•IPV4『线路1』
@@ -131,6 +131,7 @@ CCTV17,http://api2.52tb.xyz/info?id=19&token=20230326xflvzc$LR•IPV4『线路4�
 河北卫视,P2p://generationnexxxt.com:19806/7b7c9f60693b406293ed5ea3e8effbca$LR•IPV4『线路3』
 河南卫视,http://cyz32.livehbindex.hbcatv.cn/live/500000201d7c47a8b9b127d69fb816ac.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 河南卫视,http://api2.52tb.xyz/info?id=31&token=20230326xflvzc$LR•IPV4『线路2』
+河南卫视,http://tvcdn.stream3.hndt.com/tv/65c4a6d5017e1000b2b6ea2500000000_transios/playlist.m3u8?wsSecret=2836ea74ed89a6ac3f7a2ab4053afd1e&wsTime=1757547738$LR•IPV4『线路3』
 黑龙江卫视,http://cyz32.livehbindex.hbcatv.cn/live/50000020281749ed995f2824759051fa.m3u8?bitrate=2300&pt=5$LR•IPV4『线路1』
 黑龙江卫视,http://api2.52tb.xyz/info?id=41&token=20230326xflvzc$LR•IPV4『线路2』
 黑龙江卫视,P2p://generationnexxxt.com:19806/aa707c237a8b488e9438372488afd20b$LR•IPV4『线路3』
@@ -215,7 +216,7 @@ J2,P2p://generationnexxxt.com:19806/fd76c6fe901545c5b39543824e25c80b$LR•IPV4�
 动漫秀场,https://live.v1.mk/api/bestv.php?id=dmxc8m/8000000$LR•IPV4『线路1』
 动漫秀场,P2p://generationnexxxt.com:19806/1b00c8eba9624626852599a2a8383aa4$LR•IPV4『线路2』
 金鹰卡通,http://223.151.51.27:85/tsfile/live/1016_1.m3u8?key=txiptv&playlive=1&authid=0$LR•IPV4『线路1』
-金鹰卡通,http://phoneal.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1hbF9waG9uZTMmY2hzPSZkZWY9MSZzPWE3Mjc0YjdiNTE4YWUxM2Q1ZjkyZGU5ZjcxMTczNmU3JnVpZD0mdXVpZD03YjgwMjVjNzc3NDIyNjIzNmI4OTlkMWViMjc4MGUxZS02YTBlMjYzNyZ2PTImYXM9MCZlcz0xNzU3NDc2ODI0/JYKTMPP360.m3u8$LR•IPV4『线路2』
+金鹰卡通,http://phonehwei.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1od19waG9uZSZjaHM9JmRlZj0xJnM9OWFjOGMyMDdkZGQ1NmIyZGQwNjExMzAzMTRlNGNiYTcmdWlkPSZ1dWlkPTk2MzM0Y2UxNjgzZTcwMzIxNDE3YWRmNjU4MzkwNmU4LTZhMGUyNjM3JnY9MiZhcz0wJmVzPTE3NTc1MzQ0NDg,/JYKTMPP360.m3u8$LR•IPV4『线路2』
 影视频道,#genre#
 CHC动作电影,P2p://generationnexxxt.com:19806/855bc155c26d489698a02a890f1684a2$LR•IPV4
 CHC高清电影,http://www.51nas.top:4022/udp/239.81.0.240:4056$LR•IPV4『线路1』
