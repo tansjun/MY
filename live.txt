@@ -2,12 +2,12 @@
 请阅读,https://liuliuliu.tv/api/channels/1997/stream
 yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2025-10-28,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2025-10-29,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 央视频道,#genre#
 卫视频道,#genre#
 湖南卫视,http://120.196.232.43:8088/rrs03.hw.gmcc.net/PLTV/651/224/3221226698/1.m3u8$LR•IPV4
 港·澳·台,#genre#
 少儿频道,#genre#
-金鹰卡通,http://phonetx.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD10eF9waG9uZV9saXZlJmNocz0mZGVmPTEmcz1jMDQ2MTRlYmRmNmFjYWRkYjZkNjkxZDM1MDdiOGRhZSZ1aWQ9JnV1aWQ9ODRmYTJlNjFmODVlODM2ZmMwYTU1YjkzMGNkZmYzNzYtNmEwZTI2Mzcmdj0yJmFzPTAmZXM9MTc2MTYwOTY4NA,,/JYKTMPP360.m3u8$LR•IPV4
+金鹰卡通,http://phonehwei.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1od19waG9uZSZjaHM9JmRlZj0xJnM9YTBmOGY2OGQwNjU5MDM3ZDM4NDEzNmY1NGYzYjA5ZTMmdWlkPSZ1dWlkPTRlMGE0NWRhMzE4N2ZhMTA0MTdmOWRmMWJkOGRjOGFjLTZhMGUyNjM3JnY9MiZhcz0wJmVzPTE3NjE2NzA1Mzc,/JYKTMPP360.m3u8$LR•IPV4
 影视频道,#genre#
 
