@@ -2,22 +2,18 @@
 请阅读,https://liuliuliu.tv/api/channels/1997/stream
 yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2025-11-09,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2025-11-10,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 央视频道,#genre#
 卫视频道,#genre#
 湖南卫视,http://120.196.232.43:8088/rrs03.hw.gmcc.net/PLTV/651/224/3221226698/1.m3u8$LR•IPV4
-浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1762632308-2cd771f4ec537f8d24da8e52e386ff53-0-e7a72655959806a0d12747a7b6b9f229$LR•IPV4
-北京卫视,https://hsplay-360.v.btime.com/live_btime/btv_sn_20170706_s1/index.m3u8?time=1762626468&sign=3ba5e985f06273e5e437b1318ece2a61$LR•IPV4
-重庆卫视,http://p2.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202511090405/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4
-深圳卫视,https://sztv-hls.sztv.com.cn/AxeFRth/500/137Ace0.m3u8?sign=35f556cfd067bcaf46b750837ad0fef2&t=690fa852$LR•IPV4
+浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1762718415-3f30f1534196c55df02b3f44271927c0-0-301056da549594312dfa4d2675e2ce75$LR•IPV4
+重庆卫视,http://p2.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202511100400/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4
 黑龙江卫视,http://p2.ytelc.com/videojs.php?id=https://idclive.hljtv.com:4430/live/hljws_own.m3u8$LR•IPV4
-海南卫视,https://livelyws.chinamcache.com/lyws/zb03.m3u8$LR•IPV4
 云南卫视,http://p2.ytelc.com/xgplayer.php?id=https://hwapi.yntv.net/ew265l/z1z6s5.m3u8$LR•IPV4
-三沙卫视,https://srs.ssws.tv/video/sstv-10/index.m3u8$LR•IPV4
 港·澳·台,#genre#
 凤凰中文,http://api.mg.itv888.cn:8080/streams/av3zqsgq64m/index.m3u8$LR•IPV4
-凤凰资讯,http://api.mg.itv888.cn:8080/streams/3mz319hboll/index.m3u8$LR•IPV4
+凤凰资讯,http://api.mg.itv888.cn:8080/hls/11ef1dc70d8/index.m3u8$LR•IPV4
 少儿频道,#genre#
-金鹰卡通,http://phoneqq.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1xcV9waG9uZV9saXZlJmNocz0mZGVmPTEmcz1jMDJiZTViOTY1NGIxMmVjNTIzZGQ0YWIyZTQ0NzMwZiZ1aWQ9JnV1aWQ9NzYzMDg0OWFlZWQwYjBhNGNkODk4ODA5OTJiN2EzMjMtNmEwZTI2Mzcmdj0yJmFzPTAmZXM9MTc2MjY1MDA4Mg,,/JYKTMPP360.m3u8$LR•IPV4
+金鹰卡通,http://phoneqq.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1xcV9waG9uZV9saXZlJmNocz0mZGVmPTEmcz0zMTBhODIxNDg2ZmY1ZGMyNGZiNWI3MzRmYTYwYzc4MiZ1aWQ9JnV1aWQ9ZGNkZWQ1YTVmZTU4ZDMwZmE5MGZkODEwMzUzZTQ4ZTAtNmEwZTI2Mzcmdj0yJmFzPTAmZXM9MTc2MjczNjY4Nw,,/JYKTMPP360.m3u8$LR•IPV4
 影视频道,#genre#
 
