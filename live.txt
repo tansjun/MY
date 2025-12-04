@@ -2,13 +2,12 @@
 请阅读,https://liuliuliu.tv/api/channels/1997/stream
 yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2025-12-04,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2025-12-05,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 央视频道,#genre#
 卫视频道,#genre#
 湖南卫视,http://120.196.232.43:8088/rrs03.hw.gmcc.net/PLTV/651/224/3221226698/1.m3u8$LR•IPV4
-浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1764791957-6e71ddb058c8ea333eab854eb1b175b9-0-0ea0fdb77bae640a2a225a9bf4f5ed4d$LR•IPV4
-重庆卫视,http://p2.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202512040405/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4
-天津卫视,https://piccpndks.v.kcdnvip.com/audio/tianjin_2/index.m3u8$LR•IPV4
+浙江卫视,http://zwebl02.cztv.com/live/channel01720Pnew.m3u8?auth_key=1764877380-ecdd66ac283e72a7a806e98657469804-0-bea7ffa6d776433012e41709ccddfd45$LR•IPV4
+重庆卫视,http://p2.ytelc.com/videojs.php?id=https://sjlivecdn9.cbg.cn/202512050400/app_2/_definst_/ls_2.stream/chunklist.m3u8$LR•IPV4
 海南卫视,https://livelyws.chinamcache.com/lyws/zb03.m3u8$LR•IPV4
 云南卫视,http://p2.ytelc.com/xgplayer.php?id=https://hwapi.yntv.net/ew265l/z1z6s5.m3u8$LR•IPV4
 三沙卫视,https://srs.ssws.tv/video/sstv-10/index.m3u8$LR•IPV4
@@ -16,6 +15,6 @@ yuanzl77.github.io,https://liuliuliu.tv/api/channels/233/stream
 凤凰中文,http://api.mg.itv888.cn:8080/hls/2f80047f91e/index.m3u8$LR•IPV4
 凤凰资讯,http://api.mg.itv888.cn:8080/hls/11ef1dc70d8/index.m3u8$LR•IPV4
 少儿频道,#genre#
-金鹰卡通,http://phoneqq.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1xcV9waG9uZV9saXZlJmNocz0mZGVmPTEmcz0zZWZmNTM2MWQ4ZTFlNjE0YWVlZDlmZWZjOTc3OGExOCZ1aWQ9JnV1aWQ9MjcyYWI5ZjY2YWIyYzJhYzIyZGZiZjFlZmM2NmMxMTUtNmEwZTI2Mzcmdj0yJmFzPTAmZXM9MTc2NDgwMDkzNA,,/JYKTMPP360.m3u8$LR•IPV4
+金鹰卡通,http://phoneqq.qing.mgtv.com/nn_live/nn_x64/dWlwPTEwNi4xNC4zOC41NSZ0ZXJtPTUmcWlkPSZjZG5leF9pZD1xcV9waG9uZV9saXZlJmNocz0mZGVmPTEmcz0wYjQ3ZTkyN2Y5MDgzYzAyZDZjYzkzMDZlYTI3OWYwZiZ1aWQ9JnV1aWQ9OTUzZDUzMTUzNjQ1NGU4YTE3NzQ0ZDgxNmFlYWY3ZDUtNmEwZTI2Mzcmdj0yJmFzPTAmZXM9MTc2NDg4ODMwMw,,/JYKTMPP360.m3u8$LR•IPV4
 影视频道,#genre#
 
