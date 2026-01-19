@@ -1,6 +1,7 @@
 公告,#genre#
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
 2026-01-19,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+默认分类,#genre#
 4K频道,#genre#
 央视频道,#genre#
 卫视频道,#genre#
