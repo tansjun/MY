@@ -1,17 +1,8 @@
 ip_version_priority = "ipv6"
 
 source_urls = [
-    "https://mirror.ghproxy.com/https://raw.githubusercontent.com/joevess/IPTV/main/home.m3u8",
-    "https://wzsvip.github.io/ipv6.m3u",
-    "https://wzsvip.github.io/ipv4.m3u",
-    "https://agit.ai/Yoursmile7/TVBox/raw/branch/master/live.txt",
-    "https://weixine.net/tv/ysclive.txt",
-    "https://xhdwc.tk/tvlive.txt",
-    "https://ghp.ci/https://raw.githubusercontent.com/fanmingming/live/refs/heads/main/tv/m3u/ipv6.m3u",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/cnTV_AutoUpdate.m3u8",
-    "https://ghproxy.net/raw.githubusercontent.com/Guovin/TV/gd/output/result.m3u",
-    "https://live.iptv365.org/live.txt",
-    "http://aktv.top/live.m3u"
+    "http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt",
+    "http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt"
 ]
 
 url_blacklist = [
@@ -43,8 +34,6 @@ announcements = [
     {
         "channel": "公告",
         "entries": [
-            {"name": "请阅读", "url": "https://liuliuliu.tv/api/channels/1997/stream", "logo": "http://175.178.251.183:6689/LR.jpg"},
-            {"name": "yuanzl77.github.io", "url": "https://liuliuliu.tv/api/channels/233/stream", "logo": "http://175.178.251.183:6689/LR.jpg"},
             {"name": "更新日期", "url": "https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4", "logo": "http://175.178.251.183:6689/LR.jpg"},
             {"name": None, "url": "https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4", "logo": "http://175.178.251.183:6689/LR.jpg"}
         ]
