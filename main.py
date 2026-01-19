@@ -26,18 +26,20 @@ def parse_template(template_file):
 
 def fetch_channels(url):
     channels = OrderedDict()
-
+    
     try:
-        response = requests.get(url, allow_redirects=False)
+        response = requests.get(url, timeout=10, allow_redirects=False)
         response.raise_for_status()
         response.encoding = 'utf-8'
-        lines = response.text.split("\n")
-        current_category = None
-        is_m3u = any("#EXTINF" in line for line in lines[:15])
+        lines = response.text.splitlines()  # 使用 splitlines() 更可靠
+        
+        # 检查是否为 M3U 格式
+        is_m3u = any("#EXTINF" in line for line in lines[:10])
         source_type = "m3u" if is_m3u else "txt"
-        logging.info(f"url: {url} 获取成功，判断为{source_type}格式")
-
+        logging.info(f"url: {url} 获取成功，判断为{source_type}格式，共 {len(lines)} 行")
+        
         if is_m3u:
+            # M3U 格式解析逻辑保持不变
             for line in lines:
                 line = line.strip()
                 if line.startswith("#EXTINF"):
@@ -51,29 +53,72 @@ def fetch_channels(url):
                     channel_url = line.strip()
                     if current_category and channel_name:
                         channels[current_category].append((channel_name, channel_url))
+                        channel_name = None  # 重置，避免重复使用
         else:
-            for line in lines:
+            # TXT 格式解析 - 改进版
+            current_category = None
+            
+            for line_num, line in enumerate(lines, 1):
                 line = line.strip()
+                
+                # 跳过空行和注释
+                if not line or line.startswith("#"):
+                    continue
+                
+                # 检查是否为分类行（包含 #genre#）
                 if "#genre#" in line:
-                    current_category = line.split(",")[0].strip()
-                    channels[current_category] = []
-                elif line and not line.startswith("#"):
+                    parts = line.split(",", 1)
+                    if len(parts) >= 2:
+                        current_category = parts[0].strip()
+                        channels[current_category] = []
+                        logging.debug(f"发现分类: {current_category}")
+                elif current_category is not None:
+                    # 频道行：可能是 "频道名称,URL" 或只有 URL
+                    if "," in line:
+                        # 标准格式：频道名称,URL
+                        parts = line.split(",", 1)
+                        channel_name = parts[0].strip()
+                        channel_url = parts[1].strip()
+                        
+                        # 如果频道名称为空但URL存在，尝试从URL提取名称
+                        if not channel_name and channel_url:
+                            channel_name = f"频道_{line_num}"
+                        
+                        channels[current_category].append((channel_name, channel_url))
+                        logging.debug(f"添加频道: {channel_name}")
+                    else:
+                        # 只有 URL，没有频道名称
+                        channel_url = line
+                        channel_name = f"未命名频道_{line_num}"
+                        channels[current_category].append((channel_name, channel_url))
+                        logging.debug(f"添加未命名频道: {channel_url[:50]}...")
+                else:
+                    # 没有分类的频道行，创建默认分类
                     if current_category is None:
                         current_category = "默认分类"
                         channels[current_category] = []
-                    match = re.match(r"^(.*?),(.*?)$", line)
-                    if match:
-                        channel_name = match.group(1).strip()
-                        channel_url = match.group(2).strip()
+                        logging.debug(f"创建默认分类")
+                    
+                    # 解析频道行
+                    if "," in line:
+                        parts = line.split(",", 1)
+                        channel_name = parts[0].strip()
+                        channel_url = parts[1].strip()
                         channels[current_category].append((channel_name, channel_url))
-                    elif line:
+                    else:
                         channels[current_category].append((line, ''))
-        if channels:
-            categories = ", ".join(channels.keys())
-            logging.info(f"url: {url} 爬取成功✅，包含频道分类: {categories}")
+        
+        # 统计和日志
+        total_channels = sum(len(ch_list) for ch_list in channels.values())
+        categories = ", ".join(channels.keys())
+        logging.info(f"url: {url} 爬取成功✅，共 {len(categories.split(','))} 个分类，{total_channels} 个频道")
+        logging.debug(f"分类列表: {categories}")
+        
     except requests.RequestException as e:
         logging.error(f"url: {url} 爬取失败❌, Error: {e}")
-
+    except Exception as e:
+        logging.error(f"url: {url} 解析时发生意外错误: {e}")
+    
     return channels
 
 def match_channels(template_channels, all_channels):
