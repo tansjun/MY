@@ -1,6 +1,23 @@
-2026-01-19 20:10:08,337 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式，共 1382 行
-2026-01-19 20:10:08,340 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，共 13 个分类，1344 个频道
-2026-01-19 20:10:08,396 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
-2026-01-19 20:10:08,396 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取成功✅，共 0 个分类，0 个频道
-2026-01-19 20:10:08,418 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
-2026-01-19 20:10:08,418 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取成功✅，共 0 个分类，0 个频道
+2026-01-19 20:19:18,065 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式，共 1382 行
+2026-01-19 20:19:18,071 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，共 17 个分类，1340 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '央视频道': 131 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '卫视频道': 179 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '电影频道': 105 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '数字频道': 7 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '儿童频道': 18 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '地方频道': 81 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '云霄综合': 224 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '开封文化旅游': 187 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '涟水电视台综合': 44 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '玛纳斯综合': 197 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '纪录频道': 27 个频道
+2026-01-19 20:19:18,071 - INFO - 分类 '体育频道': 12 个频道
+2026-01-19 20:19:18,072 - INFO - 分类 '解说频道': 23 个频道
+2026-01-19 20:19:18,072 - INFO - 分类 '音乐频道': 3 个频道
+2026-01-19 20:19:18,072 - INFO - 分类 '春晚频道': 23 个频道
+2026-01-19 20:19:18,072 - INFO - 分类 '直播中国': 77 个频道
+2026-01-19 20:19:18,072 - INFO - 分类 '更新时间': 2 个频道
+2026-01-19 20:19:18,190 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
+2026-01-19 20:19:18,190 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取成功✅，共 0 个分类，0 个频道
+2026-01-19 20:19:18,219 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
+2026-01-19 20:19:18,219 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取成功✅，共 0 个分类，0 个频道
