@@ -1,7 +1,6 @@
 ip_version_priority = "ipv6"
 
 source_urls = [
-    "https://live.zbds.top/tv/iptv4.txt",
     "http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt",
     "http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt"
 ]
