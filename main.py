@@ -28,7 +28,7 @@ def fetch_channels(url):
     channels = OrderedDict()
     
     try:
-        response = requests.get(url, timeout=10, allow_redirects=True)
+        response = requests.get(url, allow_redirects=False)
         response.raise_for_status()
         response.encoding = 'utf-8'
         text = response.text.strip()
@@ -98,7 +98,7 @@ def fetch_channels(url):
                     
                     # 如果当前没有分类，创建默认分类
                     if current_category is None:
-                        current_category = "未分类"
+                        current_category = "默认分类"
                         channels[current_category] = []
                         logging.debug(f"创建默认分类: {current_category}")
                     
@@ -128,7 +128,7 @@ def fetch_channels(url):
                     
                     # 如果当前没有分类，创建默认分类
                     if current_category is None:
-                        current_category = "未分类"
+                        current_category = "默认分类"
                         channels[current_category] = []
                         logging.debug(f"创建默认分类: {current_category}")
                     
