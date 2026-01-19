@@ -57,8 +57,11 @@ def fetch_channels(url):
                 if "#genre#" in line:
                     current_category = line.split(",")[0].strip()
                     channels[current_category] = []
-                elif current_category:
-                    match = re.match(r"^(.*?),(.*?)$", line)
+                elif line and not line.startswith("#"):
+                    if current_category is None:
+                        current_category = "默认分类"
+                        channels[current_category] = []
+                    match = re.match(r"^(.*?)[,，](.*?)$", line)
                     if match:
                         channel_name = match.group(1).strip()
                         channel_url = match.group(2).strip()
