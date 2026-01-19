@@ -28,18 +28,22 @@ def fetch_channels(url):
     channels = OrderedDict()
     
     try:
-        response = requests.get(url, timeout=10, allow_redirects=False)
+        response = requests.get(url, timeout=10, allow_redirects=True)
         response.raise_for_status()
         response.encoding = 'utf-8'
-        lines = response.text.splitlines()  # 使用 splitlines() 更可靠
+        text = response.text.strip()
+        lines = text.splitlines() if text else []
         
         # 检查是否为 M3U 格式
-        is_m3u = any("#EXTINF" in line for line in lines[:10])
+        is_m3u = any("#EXTINF" in line for line in lines[:10]) if lines else False
         source_type = "m3u" if is_m3u else "txt"
         logging.info(f"url: {url} 获取成功，判断为{source_type}格式，共 {len(lines)} 行")
         
         if is_m3u:
             # M3U 格式解析逻辑保持不变
+            current_category = None
+            channel_name = None
+            
             for line in lines:
                 line = line.strip()
                 if line.startswith("#EXTINF"):
@@ -49,22 +53,29 @@ def fetch_channels(url):
                         channel_name = match.group(2).strip()
                         if current_category not in channels:
                             channels[current_category] = []
+                    else:
+                        # 尝试其他可能的格式
+                        match = re.search(r'tvg-name="(.*?)"', line)
+                        if match:
+                            channel_name = match.group(1).strip()
                 elif line and not line.startswith("#"):
                     channel_url = line.strip()
                     if current_category and channel_name:
                         channels[current_category].append((channel_name, channel_url))
-                        channel_name = None  # 重置，避免重复使用
+                        channel_name = None
         else:
-            # TXT 格式解析 - 改进版
+            # TXT 格式解析 - 改进版，支持无#genre#的格式
             current_category = None
+            line_num = 0
             
-            for line_num, line in enumerate(lines, 1):
+            for line in lines:
+                line_num += 1
                 line = line.strip()
                 
-                # 跳过空行和注释
-                if not line or line.startswith("#"):
+                # 跳过空行和纯注释行
+                if not line:
                     continue
-                
+                    
                 # 检查是否为分类行（包含 #genre#）
                 if "#genre#" in line:
                     parts = line.split(",", 1)
@@ -72,52 +83,86 @@ def fetch_channels(url):
                         current_category = parts[0].strip()
                         channels[current_category] = []
                         logging.debug(f"发现分类: {current_category}")
-                elif current_category is not None:
-                    # 频道行：可能是 "频道名称,URL" 或只有 URL
-                    if "," in line:
-                        # 标准格式：频道名称,URL
-                        parts = line.split(",", 1)
-                        channel_name = parts[0].strip()
-                        channel_url = parts[1].strip()
-                        
-                        # 如果频道名称为空但URL存在，尝试从URL提取名称
-                        if not channel_name and channel_url:
-                            channel_name = f"频道_{line_num}"
-                        
-                        channels[current_category].append((channel_name, channel_url))
-                        logging.debug(f"添加频道: {channel_name}")
-                    else:
-                        # 只有 URL，没有频道名称
-                        channel_url = line
-                        channel_name = f"未命名频道_{line_num}"
-                        channels[current_category].append((channel_name, channel_url))
-                        logging.debug(f"添加未命名频道: {channel_url[:50]}...")
-                else:
-                    # 没有分类的频道行，创建默认分类
-                    if current_category is None:
-                        current_category = "默认分类"
-                        channels[current_category] = []
-                        logging.debug(f"创建默认分类")
+                    continue
                     
-                    # 解析频道行
-                    if "," in line:
-                        parts = line.split(",", 1)
-                        channel_name = parts[0].strip()
-                        channel_url = parts[1].strip()
+                # 跳过纯注释行（以#开头但不包含频道信息）
+                if line.startswith("#") and "," not in line:
+                    continue
+                    
+                # 处理频道行
+                if "," in line:
+                    # 标准格式：频道名称,URL
+                    parts = line.split(",", 1)
+                    channel_name = parts[0].strip()
+                    channel_url = parts[1].strip()
+                    
+                    # 如果当前没有分类，创建默认分类
+                    if current_category is None:
+                        current_category = "未分类"
+                        channels[current_category] = []
+                        logging.debug(f"创建默认分类: {current_category}")
+                    
+                    # 如果频道名称包含#，尝试清理
+                    if "#" in channel_name:
+                        channel_name = channel_name.split("#")[0].strip()
+                    
+                    # 如果频道名称为空，从URL提取或使用默认名称
+                    if not channel_name:
+                        if channel_url:
+                            # 尝试从URL提取频道名称
+                            channel_name = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
+                            if channel_name:
+                                channel_name = channel_name.group(1)
+                            else:
+                                channel_name = f"频道_{line_num}"
+                        else:
+                            channel_name = f"频道_{line_num}"
+                    
+                    # 添加频道
+                    if channel_url:  # 确保URL不为空
                         channels[current_category].append((channel_name, channel_url))
+                        logging.debug(f"添加频道: {channel_name} -> {channel_url[:50]}...")
+                elif line:  # 只有URL，没有逗号分隔
+                    # 尝试解析为纯URL
+                    channel_url = line
+                    
+                    # 如果当前没有分类，创建默认分类
+                    if current_category is None:
+                        current_category = "未分类"
+                        channels[current_category] = []
+                        logging.debug(f"创建默认分类: {current_category}")
+                    
+                    # 尝试从URL提取频道名称
+                    channel_name = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
+                    if channel_name:
+                        channel_name = channel_name.group(1)
                     else:
-                        channels[current_category].append((line, ''))
+                        channel_name = f"频道_{line_num}"
+                    
+                    if channel_url:  # 确保URL不为空
+                        channels[current_category].append((channel_name, channel_url))
+                        logging.debug(f"添加未命名频道: {channel_name} -> {channel_url[:50]}...")
         
         # 统计和日志
         total_channels = sum(len(ch_list) for ch_list in channels.values())
-        categories = ", ".join(channels.keys())
-        logging.info(f"url: {url} 爬取成功✅，共 {len(categories.split(','))} 个分类，{total_channels} 个频道")
-        logging.debug(f"分类列表: {categories}")
+        categories = list(channels.keys())
+        logging.info(f"url: {url} 爬取成功✅，共 {len(categories)} 个分类，{total_channels} 个频道")
+        
+        # 记录每个分类的频道数量
+        for category, ch_list in channels.items():
+            logging.debug(f"分类 '{category}': {len(ch_list)} 个频道")
         
     except requests.RequestException as e:
         logging.error(f"url: {url} 爬取失败❌, Error: {e}")
+        # 尝试记录响应状态码和内容（如果有）
+        if 'response' in locals():
+            logging.error(f"状态码: {response.status_code}")
+            if hasattr(response, 'text') and response.text:
+                logging.error(f"响应内容前200字符: {response.text[:200]}")
     except Exception as e:
         logging.error(f"url: {url} 解析时发生意外错误: {e}")
+        import traceback
+        logging.error(traceback.format_exc())
     
     return channels
 
