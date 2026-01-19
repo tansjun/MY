@@ -61,7 +61,6 @@ def fetch_channels(url):
                     if current_category is None:
                         current_category = "默认分类"
                         channels[current_category] = []
-                        
                     match = re.match(r"^(.*?),(.*?)$", line)
                     if match:
                         channel_name = match.group(1).strip()
