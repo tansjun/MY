@@ -1,6 +1,8 @@
-2026-01-19 19:55:17,643 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式，共 1382 行
-2026-01-19 19:55:17,646 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，共 13 个分类，1344 个频道
-2026-01-19 19:55:17,824 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
-2026-01-19 19:55:17,824 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，0 个频道
-2026-01-19 19:55:17,866 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 0 行
-2026-01-19 19:55:17,866 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，0 个频道
+2026-01-19 20:08:04,199 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式，共 1382 行
+2026-01-19 20:08:04,202 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，共 13 个分类，1344 个频道
+2026-01-19 20:08:04,511 - ERROR - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取失败❌, Error: 403 Client Error: Forbidden for url: https://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt
+2026-01-19 20:08:04,511 - ERROR - 状态码: 403
+2026-01-19 20:08:04,511 - ERROR - 响应内容前200字符: <h1>Access denied.</h1>
+2026-01-19 20:08:05,000 - ERROR - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取失败❌, Error: 403 Client Error: Forbidden for url: https://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt
+2026-01-19 20:08:05,000 - ERROR - 状态码: 403
+2026-01-19 20:08:05,000 - ERROR - 响应内容前200字符: <h1>Access denied.</h1>
