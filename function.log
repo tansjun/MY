@@ -1,4 +1,4 @@
-2026-01-19 17:04:12,262 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式
-2026-01-19 17:04:12,267 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，包含频道分类: 央视频道, 卫视频道, 电影频道, 数字频道, 儿童频道, 地方频道, 纪录频道, 体育频道, 解说频道, 音乐频道, 春晚频道, 直播中国, 更新时间
-2026-01-19 17:04:12,843 - ERROR - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取失败❌, Error: 403 Client Error: Forbidden for url: https://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt
-2026-01-19 17:04:13,325 - ERROR - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取失败❌, Error: 403 Client Error: Forbidden for url: https://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt
+2026-01-19 17:36:25,228 - INFO - url: https://live.zbds.top/tv/iptv4.txt 获取成功，判断为txt格式
+2026-01-19 17:36:25,232 - INFO - url: https://live.zbds.top/tv/iptv4.txt 爬取成功✅，包含频道分类: 央视频道, 卫视频道, 电影频道, 数字频道, 儿童频道, 地方频道, 纪录频道, 体育频道, 解说频道, 音乐频道, 春晚频道, 直播中国, 更新时间
+2026-01-19 17:36:25,279 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 获取成功，判断为txt格式
+2026-01-19 17:36:25,300 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 获取成功，判断为txt格式
