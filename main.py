@@ -64,18 +64,24 @@ def fetch_channels(url):
                         channels[current_category].append((channel_name, channel_url))
                         channel_name = None
         else:
-            # TXT 格式解析 - 改进版，支持无#genre#的格式
+            # TXT 格式解析 - 增强版，支持更多格式
             current_category = None
             line_num = 0
+            
+            # 尝试从URL中提取可能的默认分类名
+            default_category = "默认分类"
+            url_match = re.search(r'/([^/]+?)\.txt$', url)
+            if url_match:
+                default_category = url_match.group(1)
             
             for line in lines:
                 line_num += 1
                 line = line.strip()
                 
-                # 跳过空行和纯注释行
+                # 跳过空行
                 if not line:
                     continue
-                    
+                
                 # 检查是否为分类行（包含 #genre#）
                 if "#genre#" in line:
                     parts = line.split(",", 1)
@@ -83,59 +89,75 @@ def fetch_channels(url):
                         current_category = parts[0].strip()
                         channels[current_category] = []
                         logging.debug(f"发现分类: {current_category}")
+                    else:
+                        # 处理只有 #genre# 的情况
+                        current_category = default_category
+                        channels[current_category] = []
                     continue
-                    
+                
                 # 跳过纯注释行（以#开头但不包含频道信息）
+                # 但保留可能包含频道信息的行（如：频道名称#logo#group,url）
                 if line.startswith("#") and "," not in line:
                     continue
-                    
+                
                 # 处理频道行
                 if "," in line:
-                    # 标准格式：频道名称,URL
-                    parts = line.split(",", 1)
-                    channel_name = parts[0].strip()
-                    channel_url = parts[1].strip()
+                    # 移除行尾的注释（如果有）
+                    line = line.split("#")[0].strip() if "#" in line and not line.startswith("#") else line
                     
-                    # 如果当前没有分类，创建默认分类
-                    if current_category is None:
-                        current_category = "默认分类"
-                        channels[current_category] = []
-                        logging.debug(f"创建默认分类: {current_category}")
-                    
-                    # 如果频道名称包含#，尝试清理
-                    if "#" in channel_name:
-                        channel_name = channel_name.split("#")[0].strip()
-                    
-                    # 如果频道名称为空，从URL提取或使用默认名称
-                    if not channel_name:
-                        if channel_url:
-                            # 尝试从URL提取频道名称
-                            channel_name = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
-                            if channel_name:
-                                channel_name = channel_name.group(1)
+                    # 检查是否是频道行（包含URL）
+                    if re.search(r'^(https?|rtp|rtsp|udp)://', line.split(",")[-1].strip()):
+                        parts = line.split(",", 1)
+                        channel_name = parts[0].strip()
+                        channel_url = parts[1].strip()
+                        
+                        # 清理频道名称中的特殊标记
+                        channel_name = re.sub(r'#.*$', '', channel_name).strip()
+                        
+                        # 如果当前没有分类，创建默认分类
+                        if current_category is None:
+                            current_category = default_category
+                            channels[current_category] = []
+                            logging.debug(f"创建默认分类: {current_category}")
+                        
+                        # 如果频道名称为空，从URL提取或使用默认名称
+                        if not channel_name:
+                            if channel_url:
+                                # 尝试从URL提取频道名称
+                                channel_name = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
+                                if channel_name:
+                                    channel_name = channel_name.group(1)
+                                else:
+                                    channel_name = f"频道_{line_num}"
                             else:
                                 channel_name = f"频道_{line_num}"
-                        else:
-                            channel_name = f"频道_{line_num}"
-                    
-                    # 添加频道
-                    if channel_url:  # 确保URL不为空
-                        channels[current_category].append((channel_name, channel_url))
-                        logging.debug(f"添加频道: {channel_name} -> {channel_url[:50]}...")
-                elif line:  # 只有URL，没有逗号分隔
-                    # 尝试解析为纯URL
-                    channel_url = line
+                        
+                        # 添加频道
+                        if channel_url:  # 确保URL不为空
+                            channels[current_category].append((channel_name, channel_url))
+                            logging.debug(f"添加频道: {channel_name} -> {channel_url[:50]}...")
+                    else:
+                        # 这可能是分类行但没有#genre#标记
+                        # 尝试将其作为分类处理
+                        potential_category = line.split(",")[0].strip()
+                        if not re.search(r'^(https?|rtp|rtsp|udp)://', potential_category):
+                            current_category = potential_category
+                            channels[current_category] = []
+                            logging.debug(f"发现无标记分类: {current_category}")
+                elif line and re.search(r'^(https?|rtp|rtsp|udp)://', line):
+                    # 只有URL，没有逗号分隔
+                    channel_url = line.strip()
                     
                     # 如果当前没有分类，创建默认分类
                     if current_category is None:
-                        current_category = "默认分类"
+                        current_category = default_category
                         channels[current_category] = []
                         logging.debug(f"创建默认分类: {current_category}")
                     
                     # 尝试从URL提取频道名称
-                    channel_name = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
-                    if channel_name:
-                        channel_name = channel_name.group(1)
+                    channel_name_match = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
+                    if channel_name_match:
+                        channel_name = channel_name_match.group(1)
                     else:
                         channel_name = f"频道_{line_num}"
                     
@@ -150,7 +172,7 @@ def fetch_channels(url):
         
         # 记录每个分类的频道数量
         for category, ch_list in channels.items():
-            logging.debug(f"分类 '{category}': {len(ch_list)} 个频道")
+            logging.info(f"分类 '{category}': {len(ch_list)} 个频道")
         
     except requests.RequestException as e:
         logging.error(f"url: {url} 爬取失败❌, Error: {e}")
