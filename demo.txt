@@ -1,4 +1,4 @@
-默认分类,#genere#
+默认分类,#genre#
 
 4K频道,#genre#
 CCTV4K,
