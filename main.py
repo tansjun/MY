@@ -148,7 +148,6 @@ def filter_and_select_ips(ip_data):
             print(link)
 
     return result_links
-#
 
 def parse_template(template_file):
     template_channels = OrderedDict()
@@ -166,7 +165,6 @@ def parse_template(template_file):
                     template_channels[current_category].append(channel_name)
 
     return template_channels
-
 
 def fetch_channels(url):
     channels = OrderedDict()
@@ -383,7 +381,6 @@ def fetch_channels(url):
 
     return channels
 
-
 def match_channels(template_channels, all_channels):
     matched_channels = OrderedDict()
 
@@ -397,23 +394,40 @@ def match_channels(template_channels, all_channels):
 
     return matched_channels
 
+def get_all_source_urls():
+    """获取所有待爬取的链接：包括config中的和动态生成的"""
+    # 1. 先获取动态生成的链接
+    target_url = "https://iptv.cqshushu.com/?t=all&province=hi&limit=10&hotel_page=1&multicast_page=1"
+    ip_info = scrape_ip_basic_info(target_url)
+    
+    # 展示原始IP信息
+    display_basic_info(ip_info)
+    
+    # 生成动态链接
+    dynamic_links = []
+    if ip_info:
+        dynamic_links = filter_and_select_ips(ip_info)
+        print("\n===== 动态生成的链接列表 =====")
+        for idx, link in enumerate(dynamic_links, 1):
+            print(f"{idx}. {link}")
+    
+    # 2. 合并config中的链接和动态生成的链接（去重）
+    all_source_urls = list(config.source_urls)  # 先复制config中的链接
+    for link in dynamic_links:
+        if link not in all_source_urls:  # 去重
+            all_source_urls.append(link)
+    
+    print(f"\n===== 合并后的爬取链接总数 =====")
+    print(f"Config中的链接数: {len(config.source_urls)}")
+    print(f"动态生成的链接数: {len(dynamic_links)}")
+    print(f"合并后总链接数: {len(all_source_urls)}")
+    
+    return all_source_urls
 
 def filter_source_urls(template_file):
     template_channels = parse_template(template_file)
-    source_urls = config.source_urls
-    """ new iv"""
-    # 目标爬取链接
-    target_url = "https://iptv.cqshushu.com/?t=all&province=hi&limit=10&hotel_page=1&multicast_page=1"
-    # 爬取核心信息
-    ip_info = scrape_ip_basic_info(target_url)
-    # 展示原始结果
-    display_basic_info(ip_info)
-    # 筛选并生成链接
-    if ip_info:
-        generated_links = filter_and_select_ips(ip_info)
-        print("\n===== 最终生成的链接列表 =====")
-        for link in enumerate(generated_links, 1):
-            source_urls.append(link)
+    # 获取合并后的所有源链接
+    source_urls = get_all_source_urls()
 
     all_channels = OrderedDict()
     for url in source_urls:
@@ -428,10 +442,8 @@ def filter_source_urls(template_file):
 
     return matched_channels, template_channels
 
-
 def is_ipv6(url):
     return re.match(r'^http:\/\/\[[0-9a-fA-F:]+\]', url) is not None
-
 
 def updateChannelUrlsM3U(channels, template_channels):
     written_urls = set()
@@ -487,7 +499,6 @@ def updateChannelUrlsM3U(channels, template_channels):
                                 f_txt.write(f"{channel_name},{new_url}\n")
 
             f_txt.write("\n")
-
 
 if __name__ == "__main__":
     template_file = "demo.txt"
