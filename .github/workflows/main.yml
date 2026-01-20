@@ -31,6 +31,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests
+        pip install beautifulsoup4
 
     - name: Run Python script
       run: python main.py
