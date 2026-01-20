@@ -1,22 +1,28 @@
-2026-01-20 04:46:16,682 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-20 04:46:16,682 - INFO - 响应内容长度: 11722 字符
-2026-01-20 04:46:16,682 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
-#类型：海南省海口市龙华区组播 海南电信
-#节目数量：209
-CCTV4K,http://112.66.107.48:8888/rtp/239.253.64.48:5140
-CCTV16 4K,http://112.66.107.48:8888/rtp/239.253.64.126:5140
-北京卫视4K,http://112.66.107.48
-2026-01-20 04:46:16,682 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-20 04:46:16,684 - INFO - url: http://iptv.cqshushu.com/?s=112.66.107.48%3A8888&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-20 04:46:16,684 - INFO - 分类 '默认分类': 209 个频道
-2026-01-20 04:46:17,191 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-20 04:46:17,192 - INFO - 响应内容长度: 11931 字符
-2026-01-20 04:46:17,192 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
-#类型：海南省海口市龙华区组播 海南电信
-#节目数量：209
-CCTV4K,http://112.66.186.176:5106/rtp/239.253.64.48:5140
-CCTV16 4K,http://112.66.186.176:5106/rtp/239.253.64.126:5140
-北京卫视4K,http://112.66.186.
-2026-01-20 04:46:17,192 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-20 04:46:17,194 - INFO - url: http://iptv.cqshushu.com/?s=112.66.186.176%3A5106&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-20 04:46:17,194 - INFO - 分类 '默认分类': 209 个频道
+2026-01-20 19:46:04,190 - INFO - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 响应状态: 200
+2026-01-20 19:46:04,190 - INFO - 响应内容长度: 21849 字符
+2026-01-20 19:46:04,190 - INFO - 响应前200字符: 央视,#genre#
+CCTV1,http://iptv.cqshushu.com/migu.php?pid=cctv1&token=a4659b459f7cfd3dff66e102f223a472
+CCTV2,http://iptv.cqshushu.com/migu.php?pid=cctv2&token=a4659b459f7cfd3dff66e102f223a472
+CCTV-3 综艺,h
+2026-01-20 19:46:04,191 - INFO - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 获取成功，判断为txt格式，共 227 行
+2026-01-20 19:46:04,192 - INFO - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取成功✅，共 6 个分类，216 个频道
+2026-01-20 19:46:04,192 - INFO - 分类 '央视': 19 个频道
+2026-01-20 19:46:04,193 - INFO - 分类 '卫视': 21 个频道
+2026-01-20 19:46:04,193 - INFO - 分类 '超清': 7 个频道
+2026-01-20 19:46:04,193 - INFO - 分类 '地方': 57 个频道
+2026-01-20 19:46:04,193 - INFO - 分类 '广东': 56 个频道
+2026-01-20 19:46:04,193 - INFO - 分类 '其他': 56 个频道
+2026-01-20 19:46:04,429 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
+2026-01-20 19:46:04,429 - INFO - 响应内容长度: 4135 字符
+2026-01-20 19:46:04,429 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+#类型：海南省三亚市酒店 海南联通
+#节目数量：48
+CCTV1-综合,http://153.0.171.163:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
+CCTV2-财经,http://153.0.171.163:85/tsfile/live/0002_1.m3u8?ke
+2026-01-20 19:46:04,430 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
+2026-01-20 19:46:04,430 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
+2026-01-20 19:46:04,430 - INFO - 分类 '默认分类': 48 个频道
+2026-01-20 19:46:04,432 - ERROR - url: (1, 'http://iptv.cqshushu.com/?s=112.66.110.167%3A8888&t=multicast&channels=1&format=txt') 爬取失败❌, Error: No connection adapters were found for "(1, 'http://iptv.cqshushu.com/?s=112.66.110.167%3A8888&t=multicast&channels=1&format=txt')"
+2026-01-20 19:46:04,432 - ERROR - url: (2, 'http://iptv.cqshushu.com/?s=112.66.110.167%3A5106&t=multicast&channels=1&format=txt') 爬取失败❌, Error: No connection adapters were found for "(2, 'http://iptv.cqshushu.com/?s=112.66.110.167%3A5106&t=multicast&channels=1&format=txt')"
+2026-01-20 19:46:04,432 - ERROR - url: (3, 'http://iptv.cqshushu.com/?s=112.66.110.174%3A8888&t=multicast&channels=1&format=txt') 爬取失败❌, Error: No connection adapters were found for "(3, 'http://iptv.cqshushu.com/?s=112.66.110.174%3A8888&t=multicast&channels=1&format=txt')"
+2026-01-20 19:46:04,433 - ERROR - url: (4, 'http://iptv.cqshushu.com/?s=112.66.110.174%3A5106&t=multicast&channels=1&format=txt') 爬取失败❌, Error: No connection adapters were found for "(4, 'http://iptv.cqshushu.com/?s=112.66.110.174%3A5106&t=multicast&channels=1&format=txt')"
