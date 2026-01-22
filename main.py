@@ -224,7 +224,16 @@ def fetch_channels(url):
             current_category = None
             line_num = 0
 
-            # 尝试从URL中提取可能的默认分类名
+            # 核心修改：定义关键词到分类的映射（按优先级排序）
+            keyword_categories = [
+                ('4K', '4K频道'),
+                ('CCTV', '央视频道'),
+                ('卫视', '卫视频道'),
+                ('SD', 'SD频道'),
+                ('海南', '海南地方'),
+            ]
+
+            # 尝试从URL中提取可能的默认分类名（仅未匹配关键词时使用）
             default_category = "默认分类"
             url_match = re.search(r'/([^/]+?)\.(txt|m3u|m3u8)$', url)
             if url_match:
@@ -255,9 +264,8 @@ def fetch_channels(url):
                         channels[current_category] = []
                         logging.debug(f"发现分类: {current_category}")
                     else:
-                        # 处理只有 #genre# 的情况
-                        current_category = default_category
-                        channels[current_category] = []
+                        # 处理只有 #genre# 的情况（仍用关键词匹配逻辑）
+                        current_category = None
                     continue
 
                 # 处理频道行 - 检测是否有逗号分隔
@@ -266,7 +274,7 @@ def fetch_channels(url):
                     if line.lower().endswith("#genre#"):
                         current_category = line.split(",")[0].strip()
                         channels[current_category] = []
-                        logging.debug(f"发现分类行: {current_category}")
+                        logging.debug(f"发现无标记分类: {current_category}")
                         continue
 
                     parts = line.split(",", 1)
@@ -285,11 +293,20 @@ def fetch_channels(url):
                             # 清理频道名称中的特殊标记
                             channel_name = re.sub(r'[#].*$', '', channel_name).strip()
 
-                            # 如果当前没有分类，创建默认分类
+                            # 核心修改：无分类时，优先按频道名称关键词匹配分类
                             if current_category is None:
-                                current_category = default_category
-                                channels[current_category] = []
-                                logging.debug(f"创建默认分类: {current_category}")
+                                matched_category = None
+                                # 按优先级遍历关键词
+                                for keyword, cat in keyword_categories:
+                                    if keyword in channel_name:
+                                        matched_category = cat
+                                        break
+                                # 未匹配到关键词才用默认分类
+                                current_category = matched_category if matched_category else default_category
+                                # 初始化分类（如果不存在）
+                                if current_category not in channels:
+                                    channels[current_category] = []
+                                logging.debug(f"根据频道名称匹配分类: {channel_name} → {current_category}")
 
                             # 如果频道名称为空，从URL提取或使用默认名称
                             if not channel_name:
@@ -323,12 +340,6 @@ def fetch_channels(url):
                     # 只有URL，没有逗号分隔
                     channel_url = line.strip()
 
-                    # 如果当前没有分类，创建默认分类
-                    if current_category is None:
-                        current_category = default_category
-                        channels[current_category] = []
-                        logging.debug(f"创建默认分类: {current_category}")
-
                     # 尝试从URL提取频道名称
                     url_name_match = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
                     if url_name_match:
@@ -340,6 +351,21 @@ def fetch_channels(url):
                             channel_name = host_match.group(1)
                         else:
                             channel_name = f"频道_{line_num}"
+
+                    # 核心修改：无分类时，优先按频道名称关键词匹配分类
+                    if current_category is None:
+                        matched_category = None
+                        # 按优先级遍历关键词
+                        for keyword, cat in keyword_categories:
+                            if keyword in channel_name:
+                                matched_category = cat
+                                break
+                        # 未匹配到关键词才用默认分类
+                        current_category = matched_category if matched_category else default_category
+                        # 初始化分类（如果不存在）
+                        if current_category not in channels:
+                            channels[current_category] = []
+                        logging.debug(f"根据频道名称匹配分类: {channel_name} → {current_category}")
 
                     if channel_url:
                         channels[current_category].append((channel_name, channel_url))
