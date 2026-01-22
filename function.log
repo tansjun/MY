@@ -1,80 +1,80 @@
-2026-01-22 14:55:23,243 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
-2026-01-22 14:55:23,243 - ERROR - 状态码: 401
-2026-01-22 14:55:23,243 - ERROR - 响应头: {'Date': 'Thu, 22 Jan 2026 06:55:23 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=9,cfOrigin;dur=198', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=6SQh%2FWRZQacz%2BRKsryD4QtVUaDxnyh90l3Cdnqh%2BIdXQd3tQy%2FMkVzQ6JgIswMTHm9In1Bz9WpFrnuc6QEk8KROv6OK8u8iDPQSFtG%2FIPwV4"}]}', 'CF-RAY': '9c1d2538ed208233-IAD', 'alt-svc': 'h3=":443"; ma=86400'}
-2026-01-22 14:55:23,243 - ERROR - 响应内容前500字符: 无效 token
-2026-01-22 14:55:23,744 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:23,744 - INFO - 响应内容长度: 4135 字符
-2026-01-22 14:55:23,744 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:49,131 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
+2026-01-22 15:01:49,131 - ERROR - 状态码: 401
+2026-01-22 15:01:49,131 - ERROR - 响应头: {'Date': 'Thu, 22 Jan 2026 07:01:49 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=6,cfOrigin;dur=305', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=hkWwP8hn4DOtUG06FmQENEYEU9CkHNzh%2F%2BGsiJQLyPoO2InoS28g0iap6qv0Tku6AE%2FUGe8JPR2fhu2v%2FLiHZmyD1aeHbasnCAoxJMBKoKnC"}]}', 'CF-RAY': '9c1d2ea41c7cc8de-SJC', 'alt-svc': 'h3=":443"; ma=86400'}
+2026-01-22 15:01:49,131 - ERROR - 响应内容前500字符: 无效 token
+2026-01-22 15:01:49,524 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:49,524 - INFO - 响应内容长度: 4135 字符
+2026-01-22 15:01:49,524 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市酒店 海南联通
 #节目数量：48
 CCTV1-综合,http://153.0.171.163:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV2-财经,http://153.0.171.163:85/tsfile/live/0002_1.m3u8?ke
-2026-01-22 14:55:23,744 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
-2026-01-22 14:55:23,745 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
-2026-01-22 14:55:23,745 - INFO - 分类 '央视频道': 48 个频道
-2026-01-22 14:55:24,232 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:24,232 - INFO - 响应内容长度: 39 字符
-2026-01-22 14:55:24,232 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:49,525 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
+2026-01-22 15:01:49,526 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
+2026-01-22 15:01:49,526 - INFO - 分类 '央视频道': 48 个频道
+2026-01-22 15:01:49,756 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:49,756 - INFO - 响应内容长度: 39 字符
+2026-01-22 15:01:49,756 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：-
 #节目数量：0
-2026-01-22 14:55:24,232 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
-2026-01-22 14:55:24,232 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
-2026-01-22 14:55:24,232 - WARNING - 原始内容前10行:
-2026-01-22 14:55:24,232 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
-2026-01-22 14:55:24,232 - WARNING - 行2: #类型：-
-2026-01-22 14:55:24,232 - WARNING - 行3: #节目数量：0
-2026-01-22 14:55:24,738 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:24,738 - INFO - 响应内容长度: 11931 字符
-2026-01-22 14:55:24,738 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:49,756 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
+2026-01-22 15:01:49,756 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A885&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
+2026-01-22 15:01:49,756 - WARNING - 原始内容前10行:
+2026-01-22 15:01:49,756 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:49,757 - WARNING - 行2: #类型：-
+2026-01-22 15:01:49,757 - WARNING - 行3: #节目数量：0
+2026-01-22 15:01:49,978 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:49,978 - INFO - 响应内容长度: 11931 字符
+2026-01-22 15:01:49,978 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市吉阳区组播 海南电信
 #节目数量：209
 CCTV4K,http://119.41.165.114:8188/rtp/239.253.64.48:5140
 CCTV16 4K,http://119.41.165.114:8188/rtp/239.253.64.126:5140
 北京卫视4K,http://119.41.165.
-2026-01-22 14:55:24,739 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-22 14:55:24,740 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-22 14:55:24,740 - INFO - 分类 '4K频道': 209 个频道
-2026-01-22 14:55:25,240 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:25,240 - INFO - 响应内容长度: 39 字符
-2026-01-22 14:55:25,240 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:49,979 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
+2026-01-22 15:01:49,980 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
+2026-01-22 15:01:49,980 - INFO - 分类 '4K频道': 209 个频道
+2026-01-22 15:01:50,211 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:50,211 - INFO - 响应内容长度: 39 字符
+2026-01-22 15:01:50,211 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：-
 #节目数量：0
-2026-01-22 14:55:25,241 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
-2026-01-22 14:55:25,241 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
-2026-01-22 14:55:25,241 - WARNING - 原始内容前10行:
-2026-01-22 14:55:25,241 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
-2026-01-22 14:55:25,241 - WARNING - 行2: #类型：-
-2026-01-22 14:55:25,241 - WARNING - 行3: #节目数量：0
-2026-01-22 14:55:25,535 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:25,535 - INFO - 响应内容长度: 39 字符
-2026-01-22 14:55:25,535 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:50,212 - INFO - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
+2026-01-22 15:01:50,212 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.165.114%3A4000&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
+2026-01-22 15:01:50,212 - WARNING - 原始内容前10行:
+2026-01-22 15:01:50,212 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:50,212 - WARNING - 行2: #类型：-
+2026-01-22 15:01:50,212 - WARNING - 行3: #节目数量：0
+2026-01-22 15:01:50,440 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:50,440 - INFO - 响应内容长度: 39 字符
+2026-01-22 15:01:50,441 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：-
 #节目数量：0
-2026-01-22 14:55:25,535 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
-2026-01-22 14:55:25,535 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
-2026-01-22 14:55:25,536 - WARNING - 原始内容前10行:
-2026-01-22 14:55:25,536 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
-2026-01-22 14:55:25,536 - WARNING - 行2: #类型：-
-2026-01-22 14:55:25,536 - WARNING - 行3: #节目数量：0
-2026-01-22 14:55:26,026 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:26,027 - INFO - 响应内容长度: 11931 字符
-2026-01-22 14:55:26,027 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:50,441 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
+2026-01-22 15:01:50,441 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A885&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
+2026-01-22 15:01:50,441 - WARNING - 原始内容前10行:
+2026-01-22 15:01:50,441 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:50,441 - WARNING - 行2: #类型：-
+2026-01-22 15:01:50,441 - WARNING - 行3: #节目数量：0
+2026-01-22 15:01:50,827 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:50,827 - INFO - 响应内容长度: 11931 字符
+2026-01-22 15:01:50,827 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市吉阳区组播 海南电信
 #节目数量：209
 CCTV4K,http://119.41.162.199:8188/rtp/239.253.64.48:5140
 CCTV16 4K,http://119.41.162.199:8188/rtp/239.253.64.126:5140
 北京卫视4K,http://119.41.162.
-2026-01-22 14:55:26,027 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-22 14:55:26,028 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-22 14:55:26,028 - INFO - 分类 '4K频道': 209 个频道
-2026-01-22 14:55:26,530 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-22 14:55:26,530 - INFO - 响应内容长度: 39 字符
-2026-01-22 14:55:26,530 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:50,827 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
+2026-01-22 15:01:50,828 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
+2026-01-22 15:01:50,828 - INFO - 分类 '4K频道': 209 个频道
+2026-01-22 15:01:51,202 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-22 15:01:51,202 - INFO - 响应内容长度: 39 字符
+2026-01-22 15:01:51,202 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：-
 #节目数量：0
-2026-01-22 14:55:26,530 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
-2026-01-22 14:55:26,530 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
-2026-01-22 14:55:26,530 - WARNING - 原始内容前10行:
-2026-01-22 14:55:26,530 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
-2026-01-22 14:55:26,530 - WARNING - 行2: #类型：-
-2026-01-22 14:55:26,530 - WARNING - 行3: #节目数量：0
+2026-01-22 15:01:51,202 - INFO - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 3 行
+2026-01-22 15:01:51,202 - WARNING - url: http://iptv.cqshushu.com/?s=119.41.162.199%3A4000&t=multicast&channels=1&format=txt 获取到0个频道，可能是格式不支持或内容为空
+2026-01-22 15:01:51,202 - WARNING - 原始内容前10行:
+2026-01-22 15:01:51,202 - WARNING - 行1: #by cqshushu | 公众号：医工学习日志
+2026-01-22 15:01:51,202 - WARNING - 行2: #类型：-
+2026-01-22 15:01:51,202 - WARNING - 行3: #节目数量：0
