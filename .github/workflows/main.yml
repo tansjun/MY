@@ -2,8 +2,10 @@ name: Daily Update
 
 on:
   schedule:
-    # 仅在23:00触发1次任务
+    # 任务1：UTC 23:00触发（对应北京时间次日07:00），延迟0-30分钟
     - cron: '0 23 * * *'  
+    # 任务2：UTC 6:00触发（对应北京时间14:00），后续随机延迟0-240分钟（0-4小时），覆盖14:00-18:00
+    - cron: '0 6 * * *'  
   workflow_dispatch:
     branches:
       - main
@@ -14,9 +16,12 @@ jobs:
     env:
       TZ: Asia/Shanghai
       PLAYWRIGHT_HEADLESS: "1"
-      # 自定义延迟范围（单位：秒）
-      MIN_DELAY_SECONDS: 1       # 0.1分钟 = 6秒（最小延迟）
-      MAX_DELAY_SECONDS: 3    # 30分钟 = 1800秒（最大延迟）
+      # 任务1延迟（UTC23:00触发，对应北京时间07:00，延迟0-30分钟）
+      TASK1_MIN_DELAY: 0
+      TASK1_MAX_DELAY: 1800
+      # 任务2延迟（UTC6:00触发，对应北京时间14:00，延迟0-240分钟=0-14400秒，覆盖14:00-18:00）
+      TASK2_MIN_DELAY: 0
+      TASK2_MAX_DELAY: 14400
 
     steps:
     - name: Checkout repository
@@ -30,27 +35,56 @@ jobs:
     - name: Install system dependencies (适配Ubuntu 22.04+)
       run: |
         sudo apt-get update -y
-        # 关键修正：所有依赖包写在同一行，避免shell换行语法错误
         sudo apt-get install -y --no-install-recommends libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libatspi2.0-0 libxshmfence-dev libasound2t64 libgtk-3-0 libx11-xcb1 libxcb-dri3-0 libxrandr2 libxcursor1 libxcomposite1 libasound2-plugins libpulse0
         
     - name: Install Python dependencies
       run: |
         pip install --upgrade pip
         pip install requests beautifulsoup4 playwright
-        # 强制安装适配的Chromium版本，避免版本不兼容
         playwright install chromium --with-deps --force
 
-    - name: Generate custom random delay (0.1~30 minutes)
+    - name: Generate random delay (区分两次任务)
       if: github.event_name == 'schedule'
       id: generate_delay
       run: |
-        MIN_DELAY=${{ env.MIN_DELAY_SECONDS }}
-        MAX_DELAY=${{ env.MAX_DELAY_SECONDS }}
+        # 判断触发的是哪个定时任务（通过Cron的分钟+小时）
+        TRIGGER_HOUR=$(echo "${{ github.event.schedule }}" | cut -d' ' -f2)
+        TRIGGER_MINUTE=$(echo "${{ github.event.schedule }}" | cut -d' ' -f1)
+        
+        echo "✅ 触发定时任务的UTC时间：${TRIGGER_HOUR}:${TRIGGER_MINUTE}"
+        
+        # 任务1：UTC23:00（北京时间07:00），延迟0秒
+        if [ "$TRIGGER_HOUR" = "23" ] && [ "$TRIGGER_MINUTE" = "0" ]; then
+          MIN_DELAY=${{ env.TASK1_MIN_DELAY }}
+          MAX_DELAY=${{ env.TASK1_MAX_DELAY }}
+          echo "✅ 匹配到任务1（北京时间07:00），延迟范围：${MIN_DELAY}-${MAX_DELAY}秒"
+        # 任务2：UTC6:00（北京时间14:00），延迟0-14400秒（0-4小时）
+        elif [ "$TRIGGER_HOUR" = "6" ] && [ "$TRIGGER_MINUTE" = "0" ]; then
+          MIN_DELAY=${{ env.TASK2_MIN_DELAY }}
+          MAX_DELAY=${{ env.TASK2_MAX_DELAY }}
+          echo "✅ 匹配到任务2（北京时间14:00-18:00），延迟范围：${MIN_DELAY}-${MAX_DELAY}秒"
+        else
+          # 兜底：无延迟
+          MIN_DELAY=0
+          MAX_DELAY=0
+          echo "✅ 未匹配到预设任务，使用默认延迟：0秒"
+        fi
+        
+        # 生成随机延迟
         RANDOM_DELAY=$((MIN_DELAY + RANDOM % (MAX_DELAY - MIN_DELAY + 1)))
         DELAY_MINUTES=$((RANDOM_DELAY / 60))
         DELAY_SECONDS=$((RANDOM_DELAY % 60))
-        echo "✅ 自定义延迟范围：${MIN_DELAY}秒 ~ ${MAX_DELAY}秒"
-        echo "✅ 本次随机延迟：${DELAY_MINUTES} 分 ${DELAY_SECONDS} 秒（总计 ${RANDOM_DELAY} 秒）"
+        
+        # 转换为北京时间输出
+        TRIGGER_TIME_UTC="${TRIGGER_HOUR}:${TRIGGER_MINUTE}"
+        TRIGGER_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC" +"%H:%M")
+        EXECUTE_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC + $RANDOM_DELAY seconds" +"%H:%M:%S")
+        
+        echo "✅ 触发时北京时间：${TRIGGER_TIME_CN}"
+        echo "✅ 本次随机延迟：${DELAY_MINUTES}分${DELAY_SECONDS}秒（总计${RANDOM_DELAY}秒）"
+        echo "✅ 实际执行北京时间：${EXECUTE_TIME_CN}"
+        
+        # 传递到后续步骤
         echo "random_delay=$RANDOM_DELAY" >> $GITHUB_OUTPUT
 
     - name: Execute random delay
