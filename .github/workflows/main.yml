@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # 生成0-1200秒（0-20分钟）的随机延迟（仅定时任务生效）
-      RANDOM_DELAY: ${{ github.event_name == 'schedule' && (github.run_id % 1200) || 0 }}
+      RANDOM_DELAY: ${{ github.event_name == 'schedule' && (github.run_id % 1) || 0 }}
 
     steps:
     - name: Checkout repository
