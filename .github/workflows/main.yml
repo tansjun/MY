@@ -27,7 +27,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        cache: 'pip'
+        # 关键修改：移除cache配置（因无requirements.txt/pyproject.toml）
+        # 如需保留缓存，可后续在仓库中创建requirements.txt文件
 
     - name: Install system dependencies (for Playwright)
       run: |
@@ -50,7 +51,6 @@ jobs:
         MAX_DELAY=${{ env.MAX_DELAY_SECONDS }}
         
         # 生成 MIN_DELAY ~ MAX_DELAY 之间的随机数（秒）
-        # 公式：$((MIN + RANDOM % (MAX - MIN + 1)))
         RANDOM_DELAY=$((MIN_DELAY + RANDOM % (MAX_DELAY - MIN_DELAY + 1)))
         
         # 转换为分钟+秒，便于日志展示
