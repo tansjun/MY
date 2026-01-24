@@ -11,7 +11,6 @@ on:
 jobs:
   run_script:
     runs-on: ubuntu-latest
-    # 核心：定义延迟范围参数（可直接修改这里的数值）
     env:
       TZ: Asia/Shanghai
       PLAYWRIGHT_HEADLESS: "1"
@@ -27,41 +26,36 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        # 关键修改：移除cache配置（因无requirements.txt/pyproject.toml）
-        # 如需保留缓存，可后续在仓库中创建requirements.txt文件
 
-    - name: Install system dependencies (for Playwright)
+    - name: Install system dependencies (适配Ubuntu 22.04+)
       run: |
-        sudo apt-get update && sudo apt-get install -y \
+        sudo apt-get update -y
+        # 替换虚拟包libasound2为具体可用包，移除不必要的依赖
+        sudo apt-get install -y --no-install-recommends \
           libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev \
-          libasound2 libatspi2.0-0 libxshmfence-dev
+          libatspi2.0-0 libxshmfence-dev libasound2t64 \
+          # 新增必要依赖，确保Chromium运行
+          libgtk-3-0 libx11-xcb1 libxcb-dri3-0 libxrandr2 libxcursor1 \
+          libxcomposite1 libasound2-plugins libpulse0
         
     - name: Install Python dependencies
       run: |
         pip install --upgrade pip
         pip install requests beautifulsoup4 playwright
-        playwright install chromium --with-deps
+        # 强制安装适配的Chromium版本，避免版本不兼容
+        playwright install chromium --with-deps --force
 
     - name: Generate custom random delay (0.1~30 minutes)
       if: github.event_name == 'schedule'
       id: generate_delay
       run: |
-        # 读取自定义的最小/最大延迟（从环境变量）
         MIN_DELAY=${{ env.MIN_DELAY_SECONDS }}
         MAX_DELAY=${{ env.MAX_DELAY_SECONDS }}
-        
-        # 生成 MIN_DELAY ~ MAX_DELAY 之间的随机数（秒）
         RANDOM_DELAY=$((MIN_DELAY + RANDOM % (MAX_DELAY - MIN_DELAY + 1)))
-        
-        # 转换为分钟+秒，便于日志展示
         DELAY_MINUTES=$((RANDOM_DELAY / 60))
         DELAY_SECONDS=$((RANDOM_DELAY % 60))
-        
-        # 输出日志
-        echo "✅ 自定义延迟范围：${MIN_DELAY}秒(${MIN_DELAY}/60分钟) ~ ${MAX_DELAY}秒(${MAX_DELAY}/60分钟)"
+        echo "✅ 自定义延迟范围：${MIN_DELAY}秒 ~ ${MAX_DELAY}秒"
         echo "✅ 本次随机延迟：${DELAY_MINUTES} 分 ${DELAY_SECONDS} 秒（总计 ${RANDOM_DELAY} 秒）"
-        
-        # 传递到后续步骤
         echo "random_delay=$RANDOM_DELAY" >> $GITHUB_OUTPUT
 
     - name: Execute random delay
