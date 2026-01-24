@@ -2,7 +2,8 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '00 23 * * *' 
+    # 仅在23:00触发1次任务（核心：固定分钟为0，避免多实例）
+    - cron: '0 23 * * *'  
   workflow_dispatch:
     branches:
       - main
@@ -10,31 +11,46 @@ on:
 jobs:
   run_script:
     runs-on: ubuntu-latest
+    env:
+      # 生成0-1800秒（0-30分钟）的随机延迟（仅定时任务生效）
+      RANDOM_DELAY: ${{ github.event_name == 'schedule' && (github.run_id % 10) || 0 }}
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: 'pip'
 
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-
-    - name: Install dependencies
+    - name: Install system dependencies (for Playwright)
       run: |
-        pip install requests
-        pip install beautifulsoup4
+        sudo apt-get update && sudo apt-get install -y \
+          libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev \
+          libasound2 libatspi2.0-0 libxshmfence-dev
+        
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install requests beautifulsoup4 playwright
+        playwright install chromium --with-deps
+
+    - name: Random delay (0-30 minutes)
+      if: github.event_name == 'schedule'
+      run: |
+        # 输出延迟时间（便于排查）
+        DELAY_MINUTES=$((RANDOM_DELAY / 60))
+        DELAY_SECONDS=$((RANDOM_DELAY % 60))
+        echo "✅ 定时任务触发，随机延迟 ${DELAY_MINUTES} 分 ${DELAY_SECONDS} 秒（总计 ${RANDOM_DELAY} 秒）"
+        sleep $RANDOM_DELAY
 
     - name: Run Python script
       run: python main.py
+      env:
+        PLAYWRIGHT_HEADLESS: "1"
+        TZ: Asia/Shanghai
 
     - name: Commit and push if changed
       run: |
@@ -42,10 +58,9 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git add -A
         if ! git diff --staged --quiet; then
-          git commit -m "Auto-update live files"
+          git commit -m "Auto-update live files $(date +'%Y-%m-%d %H:%M:%S')"
           git push
         fi
         
     env:
       TZ: Asia/Shanghai
-
