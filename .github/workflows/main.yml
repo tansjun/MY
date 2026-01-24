@@ -2,7 +2,7 @@ name: Daily Update
 
 on:
   schedule:
-    # 仅在23:00触发1次任务（核心：固定分钟为0，避免多实例）
+    # 仅在23:00触发1次任务
     - cron: '0 23 * * *'  
   workflow_dispatch:
     branches:
@@ -11,9 +11,13 @@ on:
 jobs:
   run_script:
     runs-on: ubuntu-latest
+    # 核心：定义延迟范围参数（可直接修改这里的数值）
     env:
-      # 生成0-1200秒（0-20分钟）的随机延迟（仅定时任务生效）
-      RANDOM_DELAY: ${{ github.event_name == 'schedule' && (github.run_id % 1) || 0 }}
+      TZ: Asia/Shanghai
+      PLAYWRIGHT_HEADLESS: "1"
+      # 自定义延迟范围（单位：秒）
+      MIN_DELAY_SECONDS: 1       # 0.1分钟 = 6秒（最小延迟）
+      MAX_DELAY_SECONDS: 3    # 30分钟 = 1800秒（最大延迟）
 
     steps:
     - name: Checkout repository
@@ -37,20 +41,36 @@ jobs:
         pip install requests beautifulsoup4 playwright
         playwright install chromium --with-deps
 
-    - name: Random delay (0-30 minutes)
+    - name: Generate custom random delay (0.1~30 minutes)
       if: github.event_name == 'schedule'
+      id: generate_delay
       run: |
-        # 输出延迟时间（便于排查）
+        # 读取自定义的最小/最大延迟（从环境变量）
+        MIN_DELAY=${{ env.MIN_DELAY_SECONDS }}
+        MAX_DELAY=${{ env.MAX_DELAY_SECONDS }}
+        
+        # 生成 MIN_DELAY ~ MAX_DELAY 之间的随机数（秒）
+        # 公式：$((MIN + RANDOM % (MAX - MIN + 1)))
+        RANDOM_DELAY=$((MIN_DELAY + RANDOM % (MAX_DELAY - MIN_DELAY + 1)))
+        
+        # 转换为分钟+秒，便于日志展示
         DELAY_MINUTES=$((RANDOM_DELAY / 60))
         DELAY_SECONDS=$((RANDOM_DELAY % 60))
-        echo "✅ 定时任务触发，随机延迟 ${DELAY_MINUTES} 分 ${DELAY_SECONDS} 秒（总计 ${RANDOM_DELAY} 秒）"
-        sleep $RANDOM_DELAY
+        
+        # 输出日志
+        echo "✅ 自定义延迟范围：${MIN_DELAY}秒(${MIN_DELAY}/60分钟) ~ ${MAX_DELAY}秒(${MAX_DELAY}/60分钟)"
+        echo "✅ 本次随机延迟：${DELAY_MINUTES} 分 ${DELAY_SECONDS} 秒（总计 ${RANDOM_DELAY} 秒）"
+        
+        # 传递到后续步骤
+        echo "random_delay=$RANDOM_DELAY" >> $GITHUB_OUTPUT
+
+    - name: Execute random delay
+      if: github.event_name == 'schedule'
+      run: |
+        sleep ${{ steps.generate_delay.outputs.random_delay }}
 
     - name: Run Python script
       run: python main.py
-      env:
-        PLAYWRIGHT_HEADLESS: "1"
-        TZ: Asia/Shanghai
 
     - name: Commit and push if changed
       run: |
@@ -61,6 +81,3 @@ jobs:
           git commit -m "Auto-update live files $(date +'%Y-%m-%d %H:%M:%S')"
           git push
         fi
-        
-    env:
-      TZ: Asia/Shanghai
