@@ -423,7 +423,9 @@ def match_channels(template_channels, all_channels):
 def get_all_source_urls():
     """获取所有待爬取的链接：包括config中的和动态生成的"""
     # 1. 先获取动态生成的链接
-    target_url = "https://iptv.cqshushu.com/?t=all&province=hi&limit=10&hotel_page=1&multicast_page=1"
+    #target_url = "https://iptv.cqshushu.com/?t=all&province=hi&limit=10&hotel_page=1&multicast_page=1"
+    target_url = "https://iptv.cqshushu.com/?token=3bd37059dfe7bfea91e89716ca77c026&t=all&province=hi&limit=10&paer_token=1769253957%7C%7B%22ua%22%3A%22Mozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F141.0.0.0+Safari%2F537.36+SLBrowser%2F9.0.7.12231+SLBChan%2F103+SLBVPV%2F64-bit%22%2C%22lang%22%3A%22zh-CN%22%2C%22timezone%22%3A%22Asia%2FShanghai%22%2C%22screen%22%3A%221494x934%22%2C%22colorDepth%22%3A24%2C%22platform%22%3A%22Win32%22%2C%22cookieEnabled%22%3Atrue%2C%22doNotTrack%22%3A%22unknown%22%2C%22loadTime%22%3A5416%7D%7C%7B%22clickTime%22%3A1769253957319%2C%22mouseMoves%22%3A0%2C%22scrolls%22%3A0%7D%7C00n35jusy9s%7Cfe73cbb5ab198d394643e207c8255a0758c9f797ca4e44d1b3e8ebd777710b68"
+  
     ip_info = scrape_ip_basic_info(target_url)
     
     # 展示原始IP信息
