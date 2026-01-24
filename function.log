@@ -1,57 +1,57 @@
-2026-01-24 23:36:07,357 - INFO - 开始抓取 海南 的组播源IP信息
-2026-01-24 23:36:17,799 - INFO - 已选择省份：海南
-2026-01-24 23:36:21,394 - INFO - 发现组播源IP总数：6
-2026-01-24 23:36:21,478 - INFO - 筛选后有效组播IP数量：4（过滤掉2个暂时失效IP）
-2026-01-24 23:36:21,478 - INFO - 组播IP排序结果（按海口→澄迈→吉阳→儋州→临高→陵水）：
-2026-01-24 23:36:21,478 - INFO -    [1] 119.41.166.139 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
-2026-01-24 23:36:21,478 - INFO -    [2] 119.41.161.8 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
-2026-01-24 23:36:21,478 - INFO -    [3] 119.41.165.166 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
-2026-01-24 23:36:21,478 - INFO -    [4] 112.67.38.177 | 状态：新上线 | 类型：海南省儋州市组播 海南电信
-2026-01-24 23:36:21,478 - INFO - 选择前2条有效组播IP进入详情页
-2026-01-24 23:36:21,478 - INFO -    [1] 119.41.166.139 | 类型：海南省三亚市吉阳区组播 海南电信 | 状态：新上线
-2026-01-24 23:36:21,478 - INFO -    [2] 119.41.161.8 | 类型：海南省三亚市吉阳区组播 海南电信 | 状态：新上线
-2026-01-24 23:36:21,478 - INFO - 正在访问第1条IP详情页：119.41.166.139
-2026-01-24 23:36:26,242 - INFO - 详情页提取到IP+端口：119.41.166.139:8188
-2026-01-24 23:36:27,173 - INFO - 正在访问第2条IP详情页：119.41.161.8
-2026-01-24 23:36:34,083 - INFO - 详情页提取到IP+端口：119.41.161.8:8188
-2026-01-24 23:36:34,083 - INFO - 总耗时：26.73秒
-2026-01-24 23:36:34,130 - INFO - 浏览器已关闭
-2026-01-24 23:36:34,138 - INFO - 生成链接 (IP: 119.41.166.139, 端口: 8188): http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt
-2026-01-24 23:36:34,138 - INFO - 生成链接 (IP: 119.41.161.8, 端口: 8188): http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt
-2026-01-24 23:36:34,138 - INFO - 合并后总链接数: 4
-2026-01-24 23:36:34,613 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
-2026-01-24 23:36:34,613 - ERROR - 状态码: 401
-2026-01-24 23:36:34,613 - ERROR - 响应头: {'Date': 'Sat, 24 Jan 2026 15:36:34 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=8,cfOrigin;dur=358', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=AEJm55XFhv3OisWiSiFTRA6a9%2BVvyrj4WKWkCyAcPHK2JDKJvaZO%2Bqua3mwGVMSMmvkIHOvGIR747pVVCYiWm2q%2BR9VmGCxcViZ0qQfU%2Bz7v"}]}', 'CF-RAY': '9c309b6dfb8ceff2-DFW', 'alt-svc': 'h3=":443"; ma=86400'}
-2026-01-24 23:36:34,613 - ERROR - 响应内容前500字符: 无效 token
-2026-01-24 23:36:35,123 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
-2026-01-24 23:36:35,123 - INFO - 响应内容长度: 4135 字符
-2026-01-24 23:36:35,123 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-24 23:49:40,565 - INFO - 开始抓取 海南 的组播源IP信息
+2026-01-24 23:49:47,639 - INFO - 已选择省份：海南
+2026-01-24 23:49:49,271 - INFO - 发现组播源IP总数：6
+2026-01-24 23:49:49,357 - INFO - 筛选后有效组播IP数量：4（过滤掉2个暂时失效IP）
+2026-01-24 23:49:49,357 - INFO - 组播IP排序结果（按海口→澄迈→吉阳→儋州→临高→陵水）：
+2026-01-24 23:49:49,357 - INFO -    [1] 119.41.161.8 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
+2026-01-24 23:49:49,357 - INFO -    [2] 119.41.166.139 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
+2026-01-24 23:49:49,357 - INFO -    [3] 119.41.165.166 | 状态：新上线 | 类型：海南省三亚市吉阳区组播 海南电信
+2026-01-24 23:49:49,357 - INFO -    [4] 112.67.38.177 | 状态：新上线 | 类型：海南省儋州市组播 海南电信
+2026-01-24 23:49:49,357 - INFO - 选择前2条有效组播IP进入详情页
+2026-01-24 23:49:49,357 - INFO -    [1] 119.41.161.8 | 类型：海南省三亚市吉阳区组播 海南电信 | 状态：新上线
+2026-01-24 23:49:49,357 - INFO -    [2] 119.41.166.139 | 类型：海南省三亚市吉阳区组播 海南电信 | 状态：新上线
+2026-01-24 23:49:49,357 - INFO - 正在访问第1条IP详情页：119.41.161.8
+2026-01-24 23:49:55,415 - INFO - 详情页提取到IP+端口：119.41.161.8:8188
+2026-01-24 23:49:58,248 - INFO - 正在访问第2条IP详情页：119.41.166.139
+2026-01-24 23:50:05,718 - INFO - 详情页提取到IP+端口：119.41.166.139:8188
+2026-01-24 23:50:05,718 - INFO - 总耗时：25.15秒
+2026-01-24 23:50:05,752 - INFO - 浏览器已关闭
+2026-01-24 23:50:05,760 - INFO - 生成链接 (IP: 119.41.161.8, 端口: 8188): http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt
+2026-01-24 23:50:05,760 - INFO - 生成链接 (IP: 119.41.166.139, 端口: 8188): http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt
+2026-01-24 23:50:05,760 - INFO - 合并后总链接数: 4
+2026-01-24 23:50:06,028 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
+2026-01-24 23:50:06,028 - ERROR - 状态码: 401
+2026-01-24 23:50:06,028 - ERROR - 响应头: {'Date': 'Sat, 24 Jan 2026 15:50:06 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=5,cfOrigin;dur=183', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Xb3vGzWrtohn280bC6Cpgwu%2FB4IIFklIcFV%2FOlBzXaU4xf2Z%2BZA0cv7rNUk8S0KhPxiFqJVuC%2BZUOLXnRWdUOSP15wqFYz9xo4%2BBmxbvMXfv"}]}', 'CF-RAY': '9c30af3e7f01f83f-ORD', 'alt-svc': 'h3=":443"; ma=86400'}
+2026-01-24 23:50:06,028 - ERROR - 响应内容前500字符: 无效 token
+2026-01-24 23:50:06,461 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
+2026-01-24 23:50:06,461 - INFO - 响应内容长度: 4135 字符
+2026-01-24 23:50:06,461 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市酒店 海南联通
 #节目数量：48
 CCTV1-综合,http://153.0.171.163:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV2-财经,http://153.0.171.163:85/tsfile/live/0002_1.m3u8?ke
-2026-01-24 23:36:35,123 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
-2026-01-24 23:36:35,124 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
-2026-01-24 23:36:35,124 - INFO - 分类 '央视频道': 48 个频道
-2026-01-24 23:36:35,633 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-24 23:36:35,633 - INFO - 响应内容长度: 11931 字符
-2026-01-24 23:36:35,633 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
-#类型：海南省三亚市吉阳区组播 海南电信
-#节目数量：209
-CCTV4K,http://119.41.166.139:8188/rtp/239.253.64.48:5140
-CCTV16 4K,http://119.41.166.139:8188/rtp/239.253.64.126:5140
-北京卫视4K,http://119.41.166.
-2026-01-24 23:36:35,633 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-24 23:36:35,634 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-24 23:36:35,634 - INFO - 分类 '4K频道': 209 个频道
-2026-01-24 23:36:36,155 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
-2026-01-24 23:36:36,155 - INFO - 响应内容长度: 11513 字符
-2026-01-24 23:36:36,155 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-24 23:50:06,461 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
+2026-01-24 23:50:06,462 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
+2026-01-24 23:50:06,462 - INFO - 分类 '央视频道': 48 个频道
+2026-01-24 23:50:06,756 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-24 23:50:06,756 - INFO - 响应内容长度: 11513 字符
+2026-01-24 23:50:06,756 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市吉阳区组播 海南电信
 #节目数量：209
 CCTV4K,http://119.41.161.8:8188/rtp/239.253.64.48:5140
 CCTV16 4K,http://119.41.161.8:8188/rtp/239.253.64.126:5140
 北京卫视4K,http://119.41.161.8:81
-2026-01-24 23:36:36,155 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
-2026-01-24 23:36:36,157 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
-2026-01-24 23:36:36,157 - INFO - 分类 '4K频道': 209 个频道
+2026-01-24 23:50:06,756 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
+2026-01-24 23:50:06,759 - INFO - url: http://iptv.cqshushu.com/?s=119.41.161.8%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
+2026-01-24 23:50:06,759 - INFO - 分类 '4K频道': 209 个频道
+2026-01-24 23:50:07,203 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 响应状态: 200
+2026-01-24 23:50:07,203 - INFO - 响应内容长度: 11931 字符
+2026-01-24 23:50:07,203 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+#类型：海南省三亚市吉阳区组播 海南电信
+#节目数量：209
+CCTV4K,http://119.41.166.139:8188/rtp/239.253.64.48:5140
+CCTV16 4K,http://119.41.166.139:8188/rtp/239.253.64.126:5140
+北京卫视4K,http://119.41.166.
+2026-01-24 23:50:07,203 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 获取成功，判断为txt格式，共 212 行
+2026-01-24 23:50:07,204 - INFO - url: http://iptv.cqshushu.com/?s=119.41.166.139%3A8188&t=multicast&channels=1&format=txt 爬取成功✅，共 1 个分类，209 个频道
+2026-01-24 23:50:07,204 - INFO - 分类 '4K频道': 209 个频道
