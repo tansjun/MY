@@ -3,9 +3,9 @@ name: Daily Update
 on:
   schedule:
     # 任务1：UTC 23:00触发（对应北京时间次日07:00），延迟0-30分钟
-    - cron: '0 23 * * *'  
+    #- cron: '0 23 * * *'  
     # 任务2：UTC 6:00触发（对应北京时间14:00），后续随机延迟0-240分钟（0-4小时），覆盖14:00-18:00
-    #- cron: '0 6 * * *'  
+    - cron: '0 6 * * *'  
   workflow_dispatch:
     branches:
       - main
