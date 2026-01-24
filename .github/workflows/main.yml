@@ -30,13 +30,8 @@ jobs:
     - name: Install system dependencies (适配Ubuntu 22.04+)
       run: |
         sudo apt-get update -y
-        # 替换虚拟包libasound2为具体可用包，移除不必要的依赖
-        sudo apt-get install -y --no-install-recommends \
-          libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev \
-          libatspi2.0-0 libxshmfence-dev libasound2t64 \
-          # 新增必要依赖，确保Chromium运行
-          libgtk-3-0 libx11-xcb1 libxcb-dri3-0 libxrandr2 libxcursor1 \
-          libxcomposite1 libasound2-plugins libpulse0
+        # 关键修正：所有依赖包写在同一行，避免shell换行语法错误
+        sudo apt-get install -y --no-install-recommends libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libatspi2.0-0 libxshmfence-dev libasound2t64 libgtk-3-0 libx11-xcb1 libxcb-dri3-0 libxrandr2 libxcursor1 libxcomposite1 libasound2-plugins libpulse0
         
     - name: Install Python dependencies
       run: |
