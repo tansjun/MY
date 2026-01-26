@@ -1,23 +1,23 @@
-2026-01-26 07:17:05,364 - INFO - 开始抓取 海南 的组播源IP信息
-2026-01-26 07:17:22,015 - ERROR - 核心逻辑出错：Locator.wait_for: Timeout 15000ms exceeded.
+2026-01-26 09:05:44,513 - INFO - 开始抓取 海南 的组播源IP信息
+2026-01-26 09:06:00,539 - ERROR - 核心逻辑出错：Locator.wait_for: Timeout 15000ms exceeded.
 Call log:
   - waiting for locator("#provinceSelect") to be visible
 
-2026-01-26 07:17:22,015 - INFO - 当前页面URL：https://iptv.cqshushu.com/
-2026-01-26 07:17:22,047 - INFO - 浏览器已关闭
-2026-01-26 07:17:22,054 - WARNING - 未获取到任何IP信息
-2026-01-26 07:17:22,055 - INFO - 合并后总链接数: 2
-2026-01-26 07:17:22,528 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
-2026-01-26 07:17:22,528 - ERROR - 状态码: 401
-2026-01-26 07:17:22,529 - ERROR - 响应头: {'Date': 'Sun, 25 Jan 2026 23:17:22 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=16,cfOrigin;dur=392', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=1%2FseL3h2Va3cR4kEzrzHskJvmioBtorEykYN6kCv2%2F3S9%2BtsqU2GMNraKZdR134I2usukl3Dra5UrFPucVitBEtTeYUf41fkXTxthEyeDZVB"}]}', 'CF-RAY': '9c3b7bcd3e748844-IAD', 'alt-svc': 'h3=":443"; ma=86400'}
-2026-01-26 07:17:22,529 - ERROR - 响应内容前500字符: 无效 token
-2026-01-26 07:17:23,022 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
-2026-01-26 07:17:23,023 - INFO - 响应内容长度: 4135 字符
-2026-01-26 07:17:23,023 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
+2026-01-26 09:06:00,539 - INFO - 当前页面URL：https://iptv.cqshushu.com/
+2026-01-26 09:06:00,606 - INFO - 浏览器已关闭
+2026-01-26 09:06:00,614 - WARNING - 未获取到任何IP信息
+2026-01-26 09:06:00,614 - INFO - 合并后总链接数: 2
+2026-01-26 09:06:01,032 - ERROR - url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472 爬取失败❌, Error: 401 Client Error: Unauthorized for url: https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472
+2026-01-26 09:06:01,033 - ERROR - 状态码: 401
+2026-01-26 09:06:01,033 - ERROR - 响应头: {'Date': 'Mon, 26 Jan 2026 01:06:01 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Server': 'cloudflare', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'DYNAMIC', 'Server-Timing': 'cfCacheStatus;desc="DYNAMIC", cfEdge;dur=8,cfOrigin;dur=304', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=jowpq01ioVwpuBNDWqncwjjRulkMYyAkfg%2BvdQ2jOf%2BNowFCEs2QTWYk%2B6BEj6XoDutt51MJOCue2OXEVsQffjqrE5fxrcoSnEDsWwQaESqT"}]}', 'CF-RAY': '9c3c1af27e619cd0-SJC', 'alt-svc': 'h3=":443"; ma=86400'}
+2026-01-26 09:06:01,033 - ERROR - 响应内容前500字符: 无效 token
+2026-01-26 09:06:01,273 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 响应状态: 200
+2026-01-26 09:06:01,273 - INFO - 响应内容长度: 4135 字符
+2026-01-26 09:06:01,273 - INFO - 响应前200字符: #by cqshushu | 公众号：医工学习日志
 #类型：海南省三亚市酒店 海南联通
 #节目数量：48
 CCTV1-综合,http://153.0.171.163:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 CCTV2-财经,http://153.0.171.163:85/tsfile/live/0002_1.m3u8?ke
-2026-01-26 07:17:23,023 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
-2026-01-26 07:17:23,024 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
-2026-01-26 07:17:23,024 - INFO - 分类 '央视频道': 48 个频道
+2026-01-26 09:06:01,273 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 获取成功，判断为txt格式，共 51 行
+2026-01-26 09:06:01,274 - INFO - url: http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt 爬取成功✅，共 1 个分类，48 个频道
+2026-01-26 09:06:01,275 - INFO - 分类 '央视频道': 48 个频道
