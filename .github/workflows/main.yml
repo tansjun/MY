@@ -3,7 +3,7 @@ name: Daily Update
 on:
   schedule:
     # 任务1：UTC 23:00触发（对应北京时间次日07:00），延迟0-30分钟
-    #- cron: '0 23 * * *'  
+    # - cron: '0 23 * * *'  
     # 任务2：UTC 6:00触发（对应北京时间14:00），后续随机延迟0-240分钟（0-4小时），覆盖14:00-18:00
     - cron: '0 6 * * *'  
   workflow_dispatch:
@@ -47,19 +47,20 @@ jobs:
       if: github.event_name == 'schedule'
       id: generate_delay
       run: |
-        # 判断触发的是哪个定时任务（通过Cron的分钟+小时）
-        TRIGGER_HOUR=$(echo "${{ github.event.schedule }}" | cut -d' ' -f2)
-        TRIGGER_MINUTE=$(echo "${{ github.event.schedule }}" | cut -d' ' -f1)
+        # 正确提取 cron 表达式的 分钟 和 小时（格式：分 时 日 月 周）
+        CRON_EXPR="${{ github.event.schedule }}"
+        # 分割 cron 表达式为数组
+        read -r CRON_MIN CRON_HOUR _ _ _ <<< "$CRON_EXPR"
         
-        echo "✅ 触发定时任务的UTC时间：${TRIGGER_HOUR}:${TRIGGER_MINUTE}"
+        echo "✅ 触发定时任务的UTC时间：${CRON_HOUR}:${CRON_MIN}"
         
-        # 任务1：UTC23:00（北京时间07:00），延迟0秒
-        if [ "$TRIGGER_HOUR" = "23" ] && [ "$TRIGGER_MINUTE" = "0" ]; then
+        # 任务1：UTC23:00（北京时间07:00），延迟0-30分钟
+        if [ "$CRON_HOUR" = "23" ] && [ "$CRON_MIN" = "0" ]; then
           MIN_DELAY=${{ env.TASK1_MIN_DELAY }}
           MAX_DELAY=${{ env.TASK1_MAX_DELAY }}
           echo "✅ 匹配到任务1（北京时间07:00），延迟范围：${MIN_DELAY}-${MAX_DELAY}秒"
         # 任务2：UTC6:00（北京时间14:00），延迟0-14400秒（0-4小时）
-        elif [ "$TRIGGER_HOUR" = "6" ] && [ "$TRIGGER_MINUTE" = "0" ]; then
+        elif [ "$CRON_HOUR" = "6" ] && [ "$CRON_MIN" = "0" ]; then
           MIN_DELAY=${{ env.TASK2_MIN_DELAY }}
           MAX_DELAY=${{ env.TASK2_MAX_DELAY }}
           echo "✅ 匹配到任务2（北京时间14:00-18:00），延迟范围：${MIN_DELAY}-${MAX_DELAY}秒"
