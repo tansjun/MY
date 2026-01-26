@@ -7,10 +7,11 @@ import string
 import math
 import os
 import sys
+import json
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 from datetime import datetime
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 import config
 
 # -------------------------- 基础配置 --------------------------
@@ -47,8 +48,80 @@ WINDOW_SIZE_POOL = [
     (1920, 1080), (1366, 768), (1536, 864), (1440, 900), (2560, 1440)
 ]
 
+# 反检测配置
+ANTI_DETECTION_CONFIG = {
+    "chrome_args": [
+        "--disable-blink-features=AutomationControlled,RenderStealToken,ComputePressure,WebDriverDetection",
+        "--disable-features=WebRtcHideLocalIpsWithMdns,PreloadMediaEngagementData,AutoplayIgnoreWebAudio,CanvasFingerprintingProtection,NavigatorWeBDriverDetection",
+        "--disable-webgl",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-popup-blocking",
+        "--disable-background-networking",
+        "--disable-preconnect",
+        "--disable-ipv6",
+        "--disable-notifications",
+        "--disable-extensions",
+        "--disable-plugins",
+        "--start-maximized",
+        "--enable-dom-storage",
+        "--enable-encrypted-media",
+        "--enable-site-per-process",
+        "--disable-features=VizDisplayCompositor",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-update",
+        "--disable-default-apps",
+        "--disable-hang-monitor",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-sync",
+        "--metrics-recording-only",
+        "--no-first-run",
+        "--no-service-autorun",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--disable-features=AudioServiceOutOfProcess",
+        "--disable-ipc-flooding-protection",
+        "--allow-running-insecure-content",
+        "--ignore-certificate-errors",
+        "--ignore-ssl-errors",
+        "--disable-web-security",
+        "--disable-features=IsolateOrigins,site-per-process",
+        "--flag-switches-begin --disable-features=WebDriverDetection --flag-switches-end"
+    ],
+    "ignore_default_args": [
+        "--enable-automation",
+        "--disable-default-apps",
+        "--disable-component-update",
+        "--enable-blink-features=AutomationControlled"
+    ]
+}
 
-# -------------------------- 代码2的工具函数（保留反爬特性） --------------------------
+
+# -------------------------- 初始化清理函数 --------------------------
+def init_clean_invalid_files():
+    """初始化清理无效的JSON文件"""
+    invalid_files = ["iptv_storage_state.json", "storage_reuse_count.json"]
+    for file in invalid_files:
+        if os.path.exists(file):
+            try:
+                with open(file, "r", encoding="utf-8") as f:
+                    content = f.read().strip()
+                    if not content or not json.loads(content):
+                        os.remove(file)
+                        logging.info(f"清理无效文件：{file}")
+            except:
+                os.remove(file)
+                logging.warning(f"清理异常文件：{file}")
+
+
+# 执行初始化清理
+init_clean_invalid_files()
+
+
+# -------------------------- 反爬工具函数 --------------------------
 def human_like_delay():
     """模拟人类思考延迟"""
     delay = random.expovariate(1 / 1.5)
@@ -79,27 +152,34 @@ def human_mouse_move(page, start_x, start_y, end_x, end_y):
 
 
 def random_human_interactions(page):
-    """随机执行人类无意义交互"""
-    viewport = page.viewport_size
-    interactions = [
-        lambda: page.mouse.click(random.randint(50, viewport["width"] - 50),
-                                 random.randint(50, viewport["height"] - 50),
-                                 delay=random.uniform(0.05, 0.2)),
-        lambda: page.mouse.wheel(0, random.randint(-200, 300),
-                                 delta_mode=random.choice([0, 1])),
-        lambda: page.keyboard.press("Tab", delay=random.uniform(0.1, 0.3)),
-        lambda: page.mouse.click(random.randint(100, viewport["width"] - 100),
-                                 random.randint(100, viewport["height"] - 100),
-                                 button="right", delay=random.uniform(0.1, 0.2)),
-        lambda: page.keyboard.press("Ctrl+A", delay=random.uniform(0.1, 0.3)) if random.choice([True, False]) else None
-    ]
-    selected = random.sample(interactions, k=random.randint(1, 2))
-    for action in selected:
-        try:
-            action()
-            human_like_delay()
-        except:
-            pass
+    """随机执行人类无意义交互（增加交互类型和随机性）"""
+    try:
+        viewport = page.viewport_size
+        interactions = [
+            lambda: page.mouse.click(random.randint(50, viewport["width"] - 50),
+                                     random.randint(50, viewport["height"] - 50),
+                                     delay=random.uniform(0.05, 0.2)),
+            lambda: page.mouse.wheel(0, random.randint(-200, 300),
+                                     delta_mode=random.choice([0, 1])),
+            lambda: page.keyboard.press("Tab", delay=random.uniform(0.1, 0.3)),
+            lambda: page.mouse.click(random.randint(100, viewport["width"] - 100),
+                                     random.randint(100, viewport["height"] - 100),
+                                     button="right", delay=random.uniform(0.1, 0.2)),
+            lambda: page.keyboard.press("Ctrl+A", delay=random.uniform(0.1, 0.3)) if random.choice(
+                [True, False]) else None,
+            lambda: page.keyboard.press("Space", delay=random.uniform(0.05, 0.2)),
+            lambda: page.mouse.move(random.randint(0, viewport["width"]),
+                                    random.randint(0, viewport["height"]))
+        ]
+        selected = random.sample(interactions, k=random.randint(1, 3))
+        for action in selected:
+            try:
+                action()
+                human_like_delay()
+            except Exception as e:
+                logging.warning(f"随机交互执行失败: {str(e)[:100]}")
+    except Exception as e:
+        logging.warning(f"随机交互初始化失败: {str(e)[:100]}")
 
 
 def validate_province(province_input):
@@ -119,152 +199,478 @@ def validate_province(province_input):
     return province_value, province_name
 
 
-# -------------------------- 代码2的IP处理核心函数 --------------------------
-def extract_multicast_ips_from_page(page):
+def extract_verify_cookie_prefix(page):
+    """从页面脚本中动态提取验证Cookie的前缀（避免硬编码）"""
+    try:
+        # 等待页面脚本加载
+        page.wait_for_load_state("domcontentloaded", timeout=5000)
+        # 执行JS提取前缀（和网页脚本的拼接逻辑对齐）
+        prefix = page.evaluate("""() => {
+            // 匹配网页中 'xxx'+'_'+Date.now() 的前缀部分
+            const scripts = document.querySelectorAll('body script');
+            for (const script of scripts) {
+                const scriptContent = script.textContent;
+                const prefixMatch = scriptContent.match(/var\\s+c\\s*=\\s*'([0-9a-f]+)'\\s*\\+\\s*'_'\\s*\\+\\s*Date\\.now\\(\\)/);
+                if (prefixMatch) {
+                    return prefixMatch[1];
+                }
+            }
+            return null;
+        }""")
+        return prefix if prefix else "87eb4da0dd394d53"  # 兜底默认值
+    except Exception as e:
+        logging.warning(f"提取Cookie前缀失败，使用默认值：{e}")
+        return "87eb4da0dd394d53"
+
+
+def generate_human_like_verify_cookie(page):
+    """生成带人类时序特征的验证Cookie（适配Cloudflare检测）"""
+    try:
+        # 1. 等待页面完全加载（确保和人类操作一致：先等页面加载再生成Cookie）
+        page.wait_for_load_state("load", timeout=8000)
+        # 模拟人类浏览行为：随机滚动+停留
+        page.mouse.wheel(0, random.randint(100, 300))
+        human_like_delay()
+        page.mouse.wheel(0, random.randint(-200, 100))
+        human_like_delay()
+
+        # 2. 动态提取前缀（优先从Cookie中读取已有前缀，而非仅从脚本）
+        existing_cookies = page.context.cookies()
+        prefix = None
+        for cookie in existing_cookies:
+            if cookie["name"] == "list_js_verified" and "_" in cookie["value"]:
+                prefix = cookie["value"].split("_")[0]
+                break
+        if not prefix:
+            prefix = extract_verify_cookie_prefix(page)
+
+        # 3. 生成Cookie（严格匹配网页原生格式：仅前缀+时间戳，移除随机后缀）
+        ts = int(time.time() * 1000) + random.randint(-100, 100)
+        verify_token = f"{prefix}_{ts}"  # 移除随机后缀，和网页原生一致
+        # 4. 写入Cookie（属性严格匹配Cloudflare要求）
+        page.context.add_cookies([{
+            "name": "list_js_verified",
+            "value": verify_token,
+            "domain": "cqshushu.com",  # 移除前缀点，避免跨域Cookie异常
+            "path": "/",
+            "expires": int(time.time()) + 1800,  # 30分钟，匹配网页默认
+            "httpOnly": False,
+            "secure": page.url.startswith("https"),
+            "sameSite": "None"  # 适配Cloudflare的SameSite策略
+        }])
+        # 强制刷新Cookie（确保生效）
+        page.evaluate(f'document.cookie = "list_js_verified={verify_token}; path=/; domain=cqshushu.com; max-age=1800"')
+        logging.info(f"生成适配Cloudflare的验证Cookie：{verify_token}")
+        return verify_token
+    except Exception as e:
+        logging.warning(f"提取Cookie前缀失败，使用默认值：{e}")
+        verify_token = f"87eb4da0dd394d53_{int(time.time() * 1000)}"
+        page.context.add_cookies([{
+            "name": "list_js_verified",
+            "value": verify_token,
+            "domain": "cqshushu.com",
+            "path": "/",
+            "expires": int(time.time()) + 1800,
+            "httpOnly": False,
+            "secure": page.url.startswith("https"),
+            "sameSite": "None"
+        }])
+        return verify_token
+
+
+def inject_anti_detection_scripts(page):
+    """注入深度反检测脚本，精准绕过当前验证逻辑"""
+    anti_detect_script = f"""
+        // 1. 彻底屏蔽webdriver属性（覆盖验证脚本的检测逻辑）
+        Object.defineProperty(navigator, 'webdriver', {{
+            get: () => false,  // 验证脚本判断===true，此处返回false而非undefined
+            set: () => {{}},
+            configurable: false,
+            enumerable: true
+        }});
+
+        // 2. 移除所有webdriver相关标识（覆盖验证脚本的遍历检测）
+        const removeDriverKeys = () => {{
+            const keys = Object.getOwnPropertyNames(window);
+            for (let k of keys) {{
+                if (/^\\$?cdc_/.test(k)||/__webdriver|__driver|__selenium|__fxdriver/i.test(k)) {{
+                    delete window[k];
+                }}
+            }}
+            delete window.domAutomation;
+            delete window.domAutomationController;
+            document.documentElement.removeAttribute('webdriver');
+        }};
+        removeDriverKeys();
+        // 监听属性新增，实时删除
+        const windowProxy = new Proxy(window, {{
+            set: (target, prop, value) => {{
+                if (/^\\$?cdc_/.test(prop)||/__webdriver|__driver|__selenium|__fxdriver/i.test(prop)) {{
+                    return true;
+                }}
+                target[prop] = value;
+                return true;
+            }}
+        }});
+        Object.defineProperty(window, '__proto__', {{ value: windowProxy }});
+
+        // 3. 伪装plugins为原生PluginArray类型
+        const originalPlugins = navigator.plugins;
+        Object.defineProperty(navigator, 'plugins', {{
+            get: () => {{
+                const plugins = originalPlugins || [{{
+                    name: 'Chrome PDF Plugin',
+                    filename: 'internal-pdf-viewer',
+                    description: 'Portable Document Format'
+                }}, {{
+                    name: 'Chrome Widevine CDM',
+                    filename: 'widevinecdm.dll',
+                    description: 'Widevine Content Decryption Module'
+                }}, {{
+                    name: 'Native Client',
+                    filename: 'internal-nacl-plugin',
+                    description: 'Native Client'
+                }}];
+                Object.defineProperty(plugins, 'toString', {{
+                    value: () => '[object PluginArray]',
+                    configurable: false
+                }});
+                return plugins;
+            }},
+            configurable: false,
+            enumerable: true
+        }});
+
+        // 4. 修复chrome.runtime.connect方法（验证脚本检测该方法是否为function）
+        if (window.chrome && !window.chrome.runtime) {{
+            window.chrome.runtime = {{
+                connect: () => ({{
+                    postMessage: () => {{}},
+                    onMessage: {{ addListener: () => {{}} }}
+                }}),
+                sendMessage: () => {{}},
+                onMessage: {{ addListener: () => {{}} }}
+            }};
+        }} else if (window.chrome && window.chrome.runtime && typeof window.chrome.runtime.connect !== 'function') {{
+            window.chrome.runtime.connect = () => ({{
+                postMessage: () => {{}},
+                onMessage: {{ addListener: () => {{}} }}
+            }});
+        }}
+
+        // 5. 篡改toString方法，避免检测到自定义getter
+        const originalToString = Function.prototype.toString;
+        Function.prototype.toString = function() {{
+            if (this.name === 'get webdriver') {{
+                return 'function get webdriver() {{ [native code] }}';
+            }}
+            return originalToString.call(this);
+        }};
+
+        // 6. 模拟验证脚本的Cookie生成逻辑（完全匹配格式）
+        const verifyToken = 'a5229e9f0bcc0296_' + Date.now();
+        document.cookie = `list_js_verified=${{verifyToken}}; path=/; max-age=3600`;
+
+        // 7. 禁用console调试，避免特征暴露
+        console.debug = console.log = console.warn = () => {{}};
     """
-    从页面动态提取组播源IP信息（仅处理组播表格，忽略酒店表格）
-    直接通过Playwright定位渲染后的DOM，而非静态HTML解析
-    """
-    multicast_ips = []
+    page.add_init_script(anti_detect_script)
+    logging.info("深度反检测脚本注入完成（适配当前验证逻辑）")
 
-    # 定位组播源表格（精准定位：aria-label="组播源列表" 的section下的表格）
-    multicast_table = page.locator('section[aria-label="组播源列表"] table.iptv-table')
-    # 等待表格加载完成
-    multicast_table.wait_for(state="visible", timeout=15000)
 
-    # 获取表格所有行
-    ip_rows = multicast_table.locator("tbody tr").all()
-    logging.info(f"发现组播源IP总数：{len(ip_rows)}")
-    print(f"📥 发现组播源IP总数：{len(ip_rows)}")
+def handle_verification_page(page, home_url):
+    """处理页面验证逻辑（适配Cloudflare，新增首页重入兜底）"""
+    max_verify_retry = 3
+    verify_retry_count = 0
+    verify_success = False
 
-    for row_idx, row in enumerate(ip_rows):
+    while verify_retry_count < max_verify_retry and not verify_success:
         try:
-            # 提取IP地址（a.ip-link的文本）
-            ip_link = row.locator('td[data-label="IP:"] a.ip-link')
-            ip_address = ip_link.inner_text().strip() if ip_link.is_visible() else None
+            # 检测是否出现「请从首页重新进入」提示
+            retry_hint = page.locator("h1:has-text('请从首页重新进入。')")
+            if retry_hint.is_visible():
+                logging.warning("检测到首页重入提示，重新从首页加载")
+                # 强制清空Cookie+缓存
+                page.context.clear_cookies()
+                page.evaluate("window.localStorage.clear(); window.sessionStorage.clear()")
+                # 重新访问首页（模拟人类手动输入网址）
+                page.goto(home_url, wait_until="networkidle", timeout=10000)
+                human_like_delay()
+                # 重新生成验证Cookie
+                generate_human_like_verify_cookie(page)
+                human_like_delay()
 
-            # 提取状态（status-badge的文本）
-            status_badge = row.locator('td[data-label="状态:"] span.status-badge')
-            status = status_badge.inner_text().strip() if status_badge.is_visible() else None
+            # 等待验证脚本执行
+            page.wait_for_load_state("load", timeout=10000)
+            # 模拟人类交互：点击页面空白处+等待
+            page.mouse.click(random.randint(200, 500), random.randint(200, 500), delay=random.uniform(0.2, 0.5))
+            human_like_delay()
 
-            # 提取类型（类型列的文本）
-            type_cell = row.locator('td[data-label="类型:"]')
-            ip_type = type_cell.inner_text().strip() if type_cell.is_visible() else None
+            # 检测验证是否通过
+            error_ele = page.locator("h1[style*='color:red'], h1:has-text('请从首页重新进入。')")
+            if not error_ele.is_visible():
+                # 验证通过：执行一次随机交互，模拟人类操作
+                # random_human_interactions(page)
+                verify_success = True
+                logging.info("页面验证通过，无Cloudflare拦截")
+            else:
+                raise Exception("检测到拦截提示（含首页重入）")
 
-            if ip_address:  # 仅保留有IP的条目
-                multicast_ips.append({
-                    "ip_address": ip_address,
-                    "status": status,
-                    "type": ip_type,
-                    "row_locator": row,  # 保留行定位器，用于后续点击
-                    "link_locator": ip_link  # 保留IP链接定位器
-                })
+        except PlaywrightTimeoutError:
+            verify_retry_count += 1
+            logging.warning(f"验证页面加载超时，重试{verify_retry_count}/{max_verify_retry}")
+            page.reload(wait_until="load", timeout=10000)
         except Exception as e:
-            logging.error(f"提取第{row_idx + 1}行IP信息失败：{str(e)[:100]}")
-            print(f"⚠️ 提取第{row_idx + 1}行IP信息失败：{str(e)[:100]}")
-            continue
+            verify_retry_count += 1
+            logging.error(f"验证处理异常，重试{verify_retry_count}/{max_verify_retry}：{str(e)[:200]}")
+            page.context.clear_cookies()
+            time.sleep(random.uniform(3, 5))  # 延长重试间隔，匹配人类重试行为
+            page.reload(wait_until="load", timeout=10000)
 
+    if verify_success:
+        return True
+    else:
+        logging.error(f"验证页面处理失败，已重试{max_verify_retry}次")
+        return False
+
+
+# -------------------------- 经纬度随机生成函数 --------------------------
+def generate_province_random_geo(province_value):
+    """按省份生成对应区域的随机经纬度"""
+    # 各省份核心经纬度范围（示例：可补充更多省份）
+    province_geo_range = {
+        "hi": {"lat": (18.1, 20.1), "lng": (108.3, 111.1)},  # 海南
+        "cq": {"lat": (29.3, 30.8), "lng": (106.3, 107.8)},  # 重庆
+        "gd": {"lat": (22.0, 23.5), "lng": (113.0, 114.5)},  # 广东
+        "bj": {"lat": (39.7, 40.2), "lng": (116.2, 116.7)},  # 北京
+        "sh": {"lat": (31.1, 31.4), "lng": (121.3, 121.6)},  # 上海
+        "sc": {"lat": (30.4, 30.8), "lng": (104.0, 104.4)},  # 四川
+        # 可继续补充其他省份...
+    }
+    # 默认使用海南范围（兜底）
+    geo_range = province_geo_range.get(province_value, province_geo_range["hi"])
+    random_lat = round(random.uniform(*geo_range["lat"]), 4)
+    random_lng = round(random.uniform(*geo_range["lng"]), 4)
+    logging.info(f"生成{VALUE_TO_PROVINCE.get(province_value, '海南')}随机经纬度：{random_lat}, {random_lng}")
+    return {"latitude": random_lat, "longitude": random_lng}
+
+
+# -------------------------- storage_state 容错函数 --------------------------
+def randomize_storage_state(storage_path):
+    """随机化改造storage_state文件，避免固定指纹（增加JSON解析容错）"""
+    if not os.path.exists(storage_path):
+        logging.warning(f"storage_state文件不存在：{storage_path}")
+        return
+    try:
+        # 读取文件并校验是否为空/非JSON
+        with open(storage_path, "r", encoding="utf-8") as f:
+            file_content = f.read().strip()
+            if not file_content:  # 文件为空
+                logging.warning("storage_state文件为空，删除并跳过随机化")
+                os.remove(storage_path)
+                return
+            state = json.loads(file_content)  # 解析JSON
+    except json.JSONDecodeError as e:
+        logging.error(f"storage_state文件JSON格式错误：{e}，删除异常文件")
+        os.remove(storage_path)
+        return
+    except Exception as e:
+        logging.warning(f"读取storage_state失败：{str(e)[:100]}")
+        return
+
+    # 原有随机化逻辑（保留）
+    try:
+        # 1. 随机新增localStorage/sessionStorage非核心键值对
+        for frame in state.get("origins", []):
+            # 处理localStorage
+            if "localStorage" in frame:
+                frame["localStorage"].append({
+                    "name": f"random_key_{generate_random_string(6)}",
+                    "value": generate_random_string(12)
+                })
+            # 处理sessionStorage
+            if "sessionStorage" in frame:
+                frame["sessionStorage"].append({
+                    "name": f"session_rand_{generate_random_string(6)}",
+                    "value": generate_random_string(12)
+                })
+
+        # 2. 随机调整cookies过期时间（±300秒，不影响核心验证）
+        for cookie in state.get("cookies", []):
+            if "expires" in cookie and cookie["expires"] > 0:
+                cookie["expires"] += random.randint(-300, 300)
+
+        # 写回修改后的状态（确保JSON格式正确）
+        with open(storage_path, "w", encoding="utf-8") as f:
+            json.dump(state, f, indent=2, ensure_ascii=False)
+        logging.info("storage_state文件随机化改造完成")
+    except Exception as e:
+        logging.warning(f"随机化storage_state失败：{str(e)[:100]}")
+
+
+def check_storage_reuse_count(storage_path, max_reuse=3):
+    """检查storage_state复用次数，达到阈值则删除（增加JSON解析容错）"""
+    count_file = "storage_reuse_count.json"
+    count_data = {"count": 0}  # 默认值
+
+    # 读取计数文件（增加容错）
+    try:
+        if os.path.exists(count_file):
+            with open(count_file, "r", encoding="utf-8") as f:
+                file_content = f.read().strip()
+                if file_content:  # 非空才解析
+                    count_data = json.loads(file_content)
+                else:  # 文件为空，重置计数
+                    count_data = {"count": 0}
+    except json.JSONDecodeError as e:
+        logging.error(f"复用计数文件格式错误：{e}，重置计数")
+        count_data = {"count": 0}
+    except Exception as e:
+        logging.warning(f"读取复用计数失败：{str(e)[:100]}")
+
+    # 计算新计数
+    current_count = count_data.get("count", 0) + 1
+
+    # 达到阈值则删除状态文件并重置计数
+    if current_count >= max_reuse:
+        if os.path.exists(storage_path):
+            os.remove(storage_path)
+            logging.info(f"storage_state已复用{max_reuse}次，已删除")
+        current_count = 0
+
+    # 写回新计数（确保JSON格式正确）
+    try:
+        with open(count_file, "w", encoding="utf-8") as f:
+            json.dump({"count": current_count}, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        logging.error(f"写入复用计数失败：{str(e)[:100]}")
+
+    return current_count
+
+
+# -------------------------- IP处理核心函数 --------------------------
+def extract_multicast_ips_from_page(page):
+    """从页面动态提取组播源IP信息"""
+    multicast_ips = []
+    try:
+        # 等待表格加载（增加超时时间，支持重试）
+        multicast_table = page.locator('section[aria-label="组播源列表"] table.iptv-table')
+        multicast_table.wait_for(state="visible", timeout=30000)
+
+        # 获取表格所有行
+        ip_rows = multicast_table.locator("tbody tr").all()
+        logging.info(f"发现组播源IP总数：{len(ip_rows)}")
+
+        for row_idx, row in enumerate(ip_rows):
+            try:
+                # 提取IP地址
+                ip_link = row.locator('td[data-label="IP:"] a.ip-link')
+                ip_address = ip_link.inner_text().strip() if ip_link.is_visible() else None
+
+                # 提取状态
+                status_badge = row.locator('td[data-label="状态:"] span.status-badge')
+                status = status_badge.inner_text().strip() if status_badge.is_visible() else None
+
+                # 提取类型
+                type_cell = row.locator('td[data-label="类型:"]')
+                ip_type = type_cell.inner_text().strip() if type_cell.is_visible() else None
+
+                if ip_address:
+                    multicast_ips.append({
+                        "ip_address": ip_address,
+                        "status": status,
+                        "type": ip_type,
+                        "row_locator": row,
+                        "link_locator": ip_link
+                    })
+            except Exception as e:
+                logging.error(f"提取第{row_idx + 1}行IP信息失败：{str(e)[:100]}")
+                continue
+    except PlaywrightTimeoutError:
+        logging.error("组播源表格加载超时")
+    except Exception as e:
+        logging.error(f"提取组播IP失败：{str(e)[:100]}")
     return multicast_ips
 
 
 def filter_and_sort_multicast_ips(ip_list):
-    """
-    筛选并排序组播IP：
-    1. 过滤状态为"暂时失效"的IP
-    2. 按AREA_PRIORITY中的地区顺序排序
-    """
-    # 步骤1：过滤非"暂时失效"的IP
+    """筛选并排序组播IP"""
+    # 过滤失效IP
     filtered_ips = [ip for ip in ip_list if ip.get('status') != "暂时失效"]
     logging.info(f"筛选后有效组播IP数量：{len(filtered_ips)}（过滤掉{len(ip_list) - len(filtered_ips)}个暂时失效IP）")
-    print(f"🔍 筛选后有效组播IP数量：{len(filtered_ips)}（过滤掉{len(ip_list) - len(filtered_ips)}个暂时失效IP）")
 
     if not filtered_ips:
         logging.warning("无有效组播IP（所有IP均为暂时失效）")
-        print("❌ 无有效组播IP（所有IP均为暂时失效）")
         return []
 
-    # 步骤2：按地区优先级排序
+    # 按地区优先级排序
     def get_area_priority(ip_type):
-        """获取IP类型对应的地区优先级（未匹配的放最后）"""
         if not ip_type:
             return len(AREA_PRIORITY)
         for idx, area in enumerate(AREA_PRIORITY):
             if area in ip_type:
                 return idx
-        return len(AREA_PRIORITY)  # 未匹配的地区优先级最低
+        return len(AREA_PRIORITY)
 
-    # 按地区优先级排序
     sorted_ips = sorted(filtered_ips, key=lambda x: get_area_priority(x.get('type')))
 
-    # 输出排序日志
+    # 日志输出排序结果
     logging.info("组播IP排序结果（按海口→澄迈→吉阳→儋州→临高→陵水）：")
-    print("📊 组播IP排序结果（按海口→澄迈→吉阳→儋州→临高→陵水）：")
-    for i, ip in enumerate(sorted_ips[:5]):  # 仅展示前5条
+    for i, ip in enumerate(sorted_ips[:5]):
         log_msg = f"   [{i + 1}] {ip['ip_address']} | 状态：{ip['status']} | 类型：{ip['type']}"
         logging.info(log_msg)
-        print(log_msg)
 
     return sorted_ips
 
 
 def extract_ip_port_from_detail_page(page):
-    """
-    从IP详情页提取IP+端口信息（抓取渲染后的DOM中的span.ip-detail-value）
-    返回格式：IP:端口（如 119.41.166.139:8188）
-    """
+    """从IP详情页提取IP+端口信息"""
     human_like_delay()
-    # 等待详情页加载完成
-    page.wait_for_load_state("domcontentloaded", timeout=20000)
+    try:
+        page.wait_for_load_state("networkidle", timeout=20000)
 
-    # 定位IP端口行的value（精准匹配：IP端口标签后的value）
-    # 方式1：先找"IP端口:"标签，再找同级的value
-    ip_port_label = page.locator('span.ip-detail-label:text("IP端口:")')
-    if ip_port_label.is_visible():
-        ip_port_value = ip_port_label.locator("..").locator("span.ip-detail-value")
-        ip_port_text = ip_port_value.inner_text().strip()
-        if ip_port_text and ":" in ip_port_text:
-            logging.info(f"详情页提取到IP+端口：{ip_port_text}")
-            print(f"✅ 详情页提取到IP+端口：{ip_port_text}")
+        # 方式1：精准匹配IP端口标签
+        ip_port_label = page.locator('span.ip-detail-label:text("IP端口:")')
+        if ip_port_label.is_visible():
+            ip_port_value = ip_port_label.locator("..").locator("span.ip-detail-value")
+            ip_port_text = ip_port_value.inner_text().strip()
+            if ip_port_text and ":" in ip_port_text:
+                logging.info(f"详情页提取到IP+端口：{ip_port_text}")
+                return ip_port_text
+
+        # 方式2：兜底匹配所有value
+        all_values = page.locator('span.ip-detail-value').all_inner_texts()
+        for value in all_values:
+            if ":" in value and "." in value:
+                logging.info(f"兜底提取到IP+端口：{value.strip()}")
+                return value.strip()
+
+        # 方式3：正则提取
+        page_text = page.inner_text("body")
+        ip_port_match = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b', page_text)
+        if ip_port_match:
+            ip_port_text = ip_port_match.group()
+            logging.info(f"正则提取到IP+端口：{ip_port_text}")
             return ip_port_text
 
-    # 方式2：直接定位所有ip-detail-value，筛选含":"的（兜底）
-    all_values = page.locator('span.ip-detail-value').all_inner_texts()
-    for value in all_values:
-        if ":" in value and "." in value:  # 包含IP和端口的特征
-            logging.info(f"兜底提取到IP+端口：{value.strip()}")
-            print(f"✅ 兜底提取到IP+端口：{value.strip()}")
-            return value.strip()
-
-    # 方式3：从页面URL/文本中提取（最终兜底）
-    page_text = page.inner_text("body")
-    ip_port_match = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b', page_text)
-    if ip_port_match:
-        ip_port_text = ip_port_match.group()
-        logging.info(f"正则提取到IP+端口：{ip_port_text}")
-        print(f"✅ 正则提取到IP+端口：{ip_port_text}")
-        return ip_port_text
-
-    logging.warning("详情页未找到IP+端口信息")
-    print("❌ 详情页未找到IP+端口信息")
+        logging.warning("详情页未找到IP+端口信息")
+    except Exception as e:
+        logging.error(f"提取IP端口失败：{str(e)[:150]}")
     return None
 
 
 def get_province_multicast_ip_ports(province_input):
-    """
-    获取指定省份的组播源IP及端口信息
-    :param province_input: 省份名称（如"海南"）或value值（如"hi"）
-    :return: 前两条有效组播IP的详情（含IP+端口）
-    """
-    # 1. 校验并标准化省份参数
+    """获取指定省份的组播源IP及端口信息"""
+    # 1. 校验省份参数
     try:
         province_value, province_name = validate_province(province_input)
     except ValueError as e:
         logging.error(f"参数校验失败：{e}")
-        print(f"❌ 参数校验失败：{e}")
         return None
 
     storage_path = "iptv_storage_state.json"
-    final_ip_details = []  # 存储最终的IP+端口信息
+    final_ip_details = []
+    start_time = time.time()
 
     with sync_playwright() as p:
         # 随机选择基础配置
@@ -273,37 +679,57 @@ def get_province_multicast_ip_ports(province_input):
         random_color_scheme = random.choice(["light", "dark"])
         random_device_scale = random.choice([1.0, 1.25, 1.5])
 
-        # 启动浏览器（关闭headless便于调试，上线时改为True）
+        # 启动浏览器（增强反检测参数）
+        chrome_args = ANTI_DETECTION_CONFIG["chrome_args"].copy()
+        chrome_args.append(f"--window-size={random_width},{random_height}")
+
+        # 新增Cloudflare反检测参数
+        chrome_args.extend([
+            "--disable-features=UserAgentClientHint",  # 禁用UA客户端提示（Cloudflare重点检测）
+            "--enable-features=NetworkService,NetworkServiceInProcess",
+            "--force-color-profile=srgb",  # 统一颜色配置，避免指纹差异
+            "--lang=zh-CN,zh",  # 强制语言，匹配国内访问特征
+            "--disable-background-timer-throttling",  # 禁用后台定时器节流
+            "--disable-renderer-throttling",  # 禁用渲染节流
+            "--no-zygote",  # 禁用zygote进程，减少特征
+        ])
+
         browser = p.chromium.launch(
-            headless=True,  # 调试时设为False，可看到浏览器操作；上线改为True
-            args=[
-                "--disable-blink-features=AutomationControlled,RenderStealToken,ComputePressure",
-                "--disable-features=WebRtcHideLocalIpsWithMdns,PreloadMediaEngagementData,AutoplayIgnoreWebAudio,CanvasFingerprintingProtection",
-                "--disable-webgl",
-                "--disable-gpu",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-popup-blocking",
-                "--disable-background-networking",
-                "--disable-preconnect",
-                "--disable-ipv6",
-                "--disable-notifications",
-                "--disable-extensions",
-                "--disable-plugins",
-                "--start-maximized",
-                f"--window-size={random_width},{random_height}",
-                "--enable-dom-storage",
-                "--enable-encrypted-media",
-                "--enable-site-per-process",
-            ],
-            ignore_default_args=[
-                "--enable-automation",
-                "--disable-default-apps",
-                "--disable-component-update"
-            ]
+            headless=False,  # 生产环境先保持False，排查通过后再改为True
+            args=chrome_args,
+            ignore_default_args=ANTI_DETECTION_CONFIG["ignore_default_args"],
+            slow_mo=random.uniform(100, 200),  # 放慢操作速度（从50-150提升到100-200）
+            channel="chrome"  # 指定原生Chrome通道，避免Chromium默认特征
         )
 
-        # 创建上下文
+        # 检查并处理storage_state复用次数
+        check_storage_reuse_count(storage_path, max_reuse=3)  # 最多复用3次
+
+        # 随机化改造storage_state（若存在且有效）
+        if os.path.exists(storage_path):
+            # 预校验文件是否有效
+            try:
+                with open(storage_path, "r", encoding="utf-8") as f:
+                    if not f.read().strip():
+                        os.remove(storage_path)  # 空文件直接删除
+                    else:
+                        randomize_storage_state(storage_path)
+            except:
+                if os.path.exists(storage_path):
+                    os.remove(storage_path)
+
+        # 校验storage_state有效性
+        storage_state = None
+        if os.path.exists(storage_path):
+            try:
+                with open(storage_path, "r", encoding="utf-8") as f:
+                    json.loads(f.read())  # 预解析验证
+                    storage_state = storage_path
+            except:
+                os.remove(storage_path)
+                storage_state = None
+
+        # 创建上下文（增强指纹伪装+经纬度随机化）
         context = browser.new_context(
             user_agent=random_ua,
             viewport={"width": random_width, "height": random_height},
@@ -311,7 +737,7 @@ def get_province_multicast_ip_ports(province_input):
             timezone_id="Asia/Shanghai",
             color_scheme=random_color_scheme,
             device_scale_factor=random_device_scale,
-            storage_state=storage_path if os.path.exists(storage_path) else None,
+            storage_state=storage_state,  # 仅传入有效文件路径
             extra_http_headers={
                 "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
                 "Accept-Encoding": "gzip, deflate, br",
@@ -322,11 +748,14 @@ def get_province_multicast_ip_ports(province_input):
                 "Sec-Fetch-User": "?1",
                 "Upgrade-Insecure-Requests": "1",
                 "DNT": "1" if random.choice([True, False]) else "0",
-                f"X-Random-{generate_random_string()}": generate_random_string(16)
+                f"X-Random-{generate_random_string()}": generate_random_string(16),
+                "Referer": random.choice(["", "https://iptv.cqshushu.com"])
             },
+            geolocation=generate_province_random_geo(province_value),  # 按省份生成随机经纬度
+            permissions=["geolocation"]
         )
 
-        # 拦截无用请求（加快加载）
+        # 拦截无用请求
         def handle_route(route, request):
             blocked_types = ["image", "video", "audio", "font", "stylesheet", "ping"]
             blocked_domains = ["ad.", "analytics.", "track.", "cdn.ads.", "google-analytics.com", "gtag.js"]
@@ -334,88 +763,105 @@ def get_province_multicast_ip_ports(province_input):
                 route.abort()
             else:
                 headers = request.headers.copy()
-                headers["Referer"] = random.choice(["", "https://iptv.cqshushu.com/"]) if random.choice(
-                    [True, False]) else headers.get("Referer")
+                headers["Referer"] = random.choice(["", "https://iptv.cqshushu.com"])
                 route.continue_(headers=headers)
 
         context.route("**/*", handle_route)
         page = context.new_page()
 
-        # 注入反检测JS
-        page.add_init_script(f"""
-            Object.defineProperty(navigator, 'webdriver', {{ get: () => undefined }});
-            navigator.hardwareConcurrency = {random.choice([4, 8, 12, 16])};
-            navigator.deviceMemory = {random.choice([4, 8, 16])};
-            navigator.maxTouchPoints = {random.choice([0, 1, 5])};
-            delete navigator.locks;
-            delete window._playwrightDevtoolsDetector;
-            delete window.__playwright_evaluation_script__;
-            const originalNow = Date.now;
-            Date.now = () => originalNow() + {random.randint(-100, 100)};
-            console.debug = () => {{}};
-            console.log = (...args) => {{}};
-        """)
+        # 注入深度反检测脚本
+        inject_anti_detection_scripts(page)
 
         try:
-            start_time = time.time()
-            logging.info(f"开始抓取 {province_name} 的组播源IP信息")
-            print(f"🚀 开始抓取 {province_name} 的组播源IP信息")
-            print(f"📌 随机User-Agent：{random_ua[:50]}...")
+            logging.info(f"开始抓取 {province_name} 的组播源IP信息，User-Agent: {random_ua[:50]}...")
 
-            # 访问首页
-            home_url = "https://iptv.cqshushu.com/"
-            max_retry_goto = 3
+            # 访问首页并处理验证
+            home_url = "https://iptv.cqshushu.com"
+            max_retry_goto = 2
             retry_goto_count = 0
             page_loaded = False
+
             while retry_goto_count < max_retry_goto and not page_loaded:
                 try:
                     human_like_delay()
-                    page.goto(home_url, wait_until="domcontentloaded", timeout=60000)
+                    # 模拟人类手动输入网址（先访问about:blank，再输入首页地址）
+                    page.goto("about:blank", wait_until="load", timeout=5000)
+                    human_like_delay()
+                    page.evaluate(f'window.location.href = "{home_url}"')  # 用JS模拟手动输入
+                    page.wait_for_load_state("networkidle", timeout=60000)
+
+                    # 处理页面验证
+                    if not handle_verification_page(page, home_url):
+                        raise Exception("页面验证失败")
+
+                    # 新增：首页加载后模拟人类浏览
+                    page.mouse.wheel(0, random.randint(300, 500))  # 向下滚动
+                    human_like_delay()
+                    page.mouse.move(random.randint(100, 800), random.randint(100, 600))  # 随机移动鼠标
+                    human_like_delay()
+                    page.mouse.wheel(0, random.randint(-200, 100))  # 向上滚动
+                    human_like_delay()
+
                     if page.content().strip() != "<html><head></head><body></body></html>":
                         page_loaded = True
                     else:
                         raise Exception("页面加载后内容为空")
-                    break
                 except Exception as e:
                     retry_goto_count += 1
                     logging.warning(f"首页访问重试{retry_goto_count}/{max_retry_goto}：{str(e)[:100]}")
-                    print(f"⚠️ 首页访问重试{retry_goto_count}/{max_retry_goto}：{str(e)[:100]}")
                     human_like_delay()
                     if retry_goto_count == max_retry_goto:
-                        raise Exception("首页多次加载为空，终止操作")
+                        raise Exception("首页多次加载失败，终止操作")
 
-            # 随机交互（模拟人类浏览）
-            random_human_interactions(page)
+            # 随机人类交互
+            # random_human_interactions(page)
 
-            # 定位并选择省份
-            province_select = page.locator("#provinceSelect")
-            province_select.wait_for(state="visible", timeout=15000)
+            # 定位并选择省份（增加重试和等待）
+            max_retry_select = 2
+            retry_select_count = 0
+            province_selected = False
 
-            # 模拟鼠标移动到下拉框
-            box = province_select.bounding_box()
-            if box:
-                viewport = page.viewport_size
-                target_x = box["x"] + box["width"] / 2 + random.randint(-3, 3)
-                target_y = box["y"] + box["height"] / 2 + random.randint(-3, 3)
-                start_x = random.randint(10, viewport["width"] // 2)
-                start_y = random.randint(10, viewport["height"] // 2)
-                human_mouse_move(page, start_x, start_y, target_x, target_y)
-                human_like_delay()
+            while retry_select_count < max_retry_select and not province_selected:
+                try:
+                    province_select = page.locator("#provinceSelect")
+                    province_select.wait_for(state="visible", timeout=20000)
 
-            # 选择省份
-            hover_delay = random.uniform(0.1, 0.3)
-            time.sleep(hover_delay)
-            province_select.hover()
-            human_like_delay()
-            select_delay = random.uniform(0.1, 0.3)
-            time.sleep(select_delay)
-            province_select.select_option(value=province_value)
-            logging.info(f"已选择省份：{province_name}")
-            print(f"✅ 已选择省份：{province_name}")
+                    # 模拟人类鼠标移动
+                    box = province_select.bounding_box()
+                    if box:
+                        viewport = page.viewport_size
+                        target_x = box["x"] + box["width"] / 2 + random.randint(-3, 3)
+                        target_y = box["y"] + box["height"] / 2 + random.randint(-3, 3)
+                        start_x = random.randint(10, viewport["width"] // 2)
+                        start_y = random.randint(10, viewport["height"] // 2)
+                        human_mouse_move(page, start_x, start_y, target_x, target_y)
 
-            # 等待省份页面跳转
-            random_human_interactions(page)
-            max_retry_jump = 3
+                    # 选择省份
+                    human_like_delay()
+                    hover_delay = random.uniform(0.1, 0.3)
+                    time.sleep(hover_delay)
+                    province_select.hover()
+                    human_like_delay()
+                    select_delay = random.uniform(0.1, 0.3)
+                    time.sleep(select_delay)
+                    province_select.select_option(value=province_value)
+                    logging.info(f"已选择省份：{province_name}")
+                    province_selected = True
+                except PlaywrightTimeoutError:
+                    retry_select_count += 1
+                    logging.warning(f"省份选择重试{retry_select_count}/{max_retry_select}：定位超时")
+                    human_like_delay()
+                    page.reload(wait_until="networkidle")
+                except Exception as e:
+                    retry_select_count += 1
+                    logging.warning(f"省份选择重试{retry_select_count}/{max_retry_select}：{str(e)[:100]}")
+                    human_like_delay()
+
+            if not province_selected:
+                raise Exception("省份选择多次失败")
+
+            # 等待页面跳转
+            max_retry_jump = 2
             retry_jump_count = 0
             while retry_jump_count < max_retry_jump:
                 try:
@@ -424,40 +870,34 @@ def get_province_multicast_ip_ports(province_input):
                 except Exception as e:
                     retry_jump_count += 1
                     logging.warning(f"页面跳转重试{retry_jump_count}/{max_retry_jump}：{str(e)[:100]}")
-                    print(f"⚠️ 页面跳转重试{retry_jump_count}/{max_retry_jump}：{str(e)[:100]}")
                     human_like_delay()
                     if retry_jump_count == max_retry_jump:
                         raise Exception("页面跳转多次超时")
 
-            # ========== 核心步骤1：提取组播IP列表 ==========
+            # 提取组播IP列表
             multicast_ips = extract_multicast_ips_from_page(page)
             if not multicast_ips:
                 logging.error("未提取到任何组播源IP")
-                print("❌ 未提取到任何组播源IP")
                 return None
 
-            # ========== 核心步骤2：筛选并排序组播IP ==========
+            # 筛选并排序IP
             sorted_ips = filter_and_sort_multicast_ips(multicast_ips)
             if not sorted_ips:
                 return None
 
-            # ========== 核心步骤3：选择前两条IP，抓取详情页端口 ==========
+            # 处理前两条IP
             target_ips = sorted_ips[:2]
             logging.info(f"选择前{len(target_ips)}条有效组播IP进入详情页")
-            print(f"\n🎯 选择前{len(target_ips)}条有效组播IP进入详情页：")
             for i, ip in enumerate(target_ips):
                 log_msg = f"   [{i + 1}] {ip['ip_address']} | 类型：{ip['type']} | 状态：{ip['status']}"
                 logging.info(log_msg)
-                print(log_msg)
 
             for idx, target_ip in enumerate(target_ips):
                 try:
                     logging.info(f"正在访问第{idx + 1}条IP详情页：{target_ip['ip_address']}")
-                    print(f"\n🔗 正在访问第{idx + 1}条IP详情页：{target_ip['ip_address']}")
 
-                    # 模拟人类点击IP链接（使用保留的link_locator，避免重新定位）
+                    # 模拟人类点击IP链接
                     ip_link = target_ip["link_locator"]
-                    # 鼠标移动到链接上
                     link_box = ip_link.bounding_box()
                     if link_box:
                         human_mouse_move(page,
@@ -466,11 +906,11 @@ def get_province_multicast_ip_ports(province_input):
                                          link_box["y"] + link_box["height"] / 2)
                         human_like_delay()
 
-                    # 点击IP链接（触发gotoIP函数，跳转到详情页）
-                    ip_link.click()
+                    # 点击链接
+                    ip_link.click(delay=random.uniform(0.1, 0.3))
                     human_like_delay()
 
-                    # ========== 提取详情页的IP+端口 ==========
+                    # 提取IP+端口
                     ip_port = extract_ip_port_from_detail_page(page)
 
                     # 保存结果
@@ -479,33 +919,33 @@ def get_province_multicast_ip_ports(province_input):
                         "ip_address": target_ip["ip_address"],
                         "status": target_ip["status"],
                         "type": target_ip["type"],
-                        "ip_port": ip_port,  # 核心结果：IP:端口
+                        "ip_port": ip_port,
                         "detail_url": page.url
                     })
 
-                    # 返回省份列表页（继续处理下一个IP，最后一个IP无需返回）
+                    # 返回列表页（最后一条无需返回）
                     if idx < len(target_ips) - 1:
                         page.go_back()
                         human_like_delay()
                         page.wait_for_load_state("domcontentloaded")
-                        # 重新等待组播表格加载（返回后可能需要重新定位）
                         page.locator('section[aria-label="组播源列表"] table.iptv-table').wait_for(state="visible")
 
                 except Exception as e:
                     logging.error(f"第{idx + 1}条IP详情页抓取失败：{str(e)[:150]}")
-                    print(f"❌ 第{idx + 1}条IP详情页抓取失败：{str(e)[:150]}")
                     continue
 
-            logging.info(f"总耗时：{time.time() - start_time:.2f}秒")
-            print(f"\n⏱️  总耗时：{time.time() - start_time:.2f}秒")
-            return final_ip_details
-
+        except json.JSONDecodeError as e:
+            logging.error(f"JSON解析失败：{e}，重置storage_state后重试")
+            # 重置相关文件后重试（可选）
+            if os.path.exists("iptv_storage_state.json"):
+                os.remove("iptv_storage_state.json")
+            if os.path.exists("storage_reuse_count.json"):
+                os.remove("storage_reuse_count.json")
+            return get_province_multicast_ip_ports(province_input)  # 重试一次
         except Exception as e:
             logging.error(f"核心逻辑出错：{str(e)[:200]}")
-            print(f"\n❌ 核心逻辑出错：{str(e)[:200]}")
             try:
                 logging.info(f"当前页面URL：{page.url}")
-                print(f"📝 当前页面URL：{page.url}")
             except:
                 pass
             return None
@@ -518,38 +958,39 @@ def get_province_multicast_ip_ports(province_input):
                 context.close()
                 browser.close()
                 logging.info("浏览器已关闭")
-                print("\n✅ 浏览器已关闭")
+
+        logging.info(f"抓取完成，总耗时：{time.time() - start_time:.2f}秒")
+        return final_ip_details
 
 
-# -------------------------- 代码1的保留功能（修改动态链接生成逻辑） --------------------------
+# -------------------------- 保留功能函数 --------------------------
 def display_basic_info(ip_details):
-    """展示提取的IP基础信息（适配新的IP详情结构）"""
+    """展示提取的IP基础信息"""
     if not ip_details:
-        print("未获取到任何IP信息")
         logging.warning("未获取到任何IP信息")
         return
 
-    print("\n===== IP基础信息 =====")
+    logging.info("\n===== IP基础信息 =====")
     for idx, item in enumerate(ip_details, 1):
-        print(f"{idx}. IP地址: {item['ip_address']}")
-        print(f"   状态: {item['status'] or '未知'}")
-        print(f"   类型: {item['type'] or '未知'}")
-        print(f"   IP+端口: {item['ip_port'] or '未获取到'}")
-        print("-" * 50)
+        log_msg = (
+            f"{idx}. IP地址: {item['ip_address']}\n"
+            f"   状态: {item['status'] or '未知'}\n"
+            f"   类型: {item['type'] or '未知'}\n"
+            f"   IP+端口: {item['ip_port'] or '未获取到'}"
+        )
+        logging.info(log_msg)
+        logging.info("-" * 50)
 
 
 def get_all_source_urls(province_input="海南"):
-    """
-    获取所有待爬取的链接：包括config中的和动态生成的（基于真实端口）
-    :param province_input: 省份名称/value，默认海南
-    """
-    # 1. 通过Playwright获取IP+端口信息
+    """获取所有待爬取的链接"""
+    # 获取IP+端口信息
     ip_details = get_province_multicast_ip_ports(province_input)
 
     # 展示原始IP信息
     display_basic_info(ip_details)
 
-    # 生成动态链接（使用真实获取的端口，不再预设）
+    # 生成动态链接
     dynamic_links = []
     base_url = "http://iptv.cqshushu.com/?s={ip_port}&t=multicast&channels=1&format=txt"
 
@@ -557,32 +998,27 @@ def get_all_source_urls(province_input="海南"):
         for ip_item in ip_details:
             ip_port = ip_item.get('ip_port')
             if ip_port:
-                # URL编码冒号
                 encoded_ip_port = ip_port.replace(":", "%3A")
                 link = base_url.format(ip_port=encoded_ip_port)
                 dynamic_links.append(link)
                 logging.info(f"生成链接 (IP: {ip_item['ip_address']}, 端口: {ip_port.split(':')[1]}): {link}")
-                print(
-                    f"\n生成链接 (IP: {ip_item['ip_address']}, 类型: {ip_item['type']}, 端口: {ip_port.split(':')[1]}):")
-                print(link)
 
-    # 2. 合并config中的链接和动态生成的链接（去重）
-    all_source_urls = list(config.source_urls)  # 先复制config中的链接
+    # 合并链接并去重
+    all_source_urls = list(config.source_urls)
     for link in dynamic_links:
-        if link not in all_source_urls:  # 去重
+        if link not in all_source_urls:
             all_source_urls.append(link)
 
-    print(f"\n===== 合并后的爬取链接总数 =====")
-    print(f"Config中的链接数: {len(config.source_urls)}")
-    print(f"动态生成的链接数: {len(dynamic_links)}")
-    print(f"合并后总链接数: {len(all_source_urls)}")
+    logging.info(f"\n===== 合并后的爬取链接总数 =====")
+    logging.info(f"Config中的链接数: {len(config.source_urls)}")
+    logging.info(f"动态生成的链接数: {len(dynamic_links)}")
     logging.info(f"合并后总链接数: {len(all_source_urls)}")
 
     return all_source_urls
 
 
 def parse_template(template_file):
-    """保留代码1的模板解析功能"""
+    """解析模板文件"""
     template_channels = OrderedDict()
     current_category = None
 
@@ -601,12 +1037,12 @@ def parse_template(template_file):
 
 
 def fetch_channels(url):
-    """保留代码1的频道爬取功能"""
+    """爬取频道信息"""
     channels = OrderedDict()
 
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': random.choice(USER_AGENT_POOL),
             'Accept': 'text/plain,text/html,*/*',
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
@@ -618,20 +1054,17 @@ def fetch_channels(url):
         response.encoding = 'utf-8'
         text = response.text.strip()
 
-        # 调试日志
         logging.info(f"url: {url} 响应状态: {response.status_code}")
         logging.info(f"响应内容长度: {len(text)} 字符")
         logging.info(f"响应前200字符: {text[:200] if text else '空响应'}")
 
         lines = text.splitlines() if text else []
-
-        # 检查是否为 M3U 格式
         is_m3u = any("#EXTINF" in line for line in lines[:10]) if lines else False
         source_type = "m3u" if is_m3u else "txt"
         logging.info(f"url: {url} 获取成功，判断为{source_type}格式，共 {len(lines)} 行")
 
         if is_m3u:
-            # M3U 格式解析逻辑保持不变
+            # M3U格式解析
             current_category = None
             channel_name = None
 
@@ -645,7 +1078,6 @@ def fetch_channels(url):
                         if current_category not in channels:
                             channels[current_category] = []
                     else:
-                        # 尝试其他可能的格式
                         match = re.search(r'tvg-name="(.*?)"', line)
                         if match:
                             channel_name = match.group(1).strip()
@@ -655,11 +1087,11 @@ def fetch_channels(url):
                         channels[current_category].append((channel_name, channel_url))
                         channel_name = None
         else:
-            # TXT 格式解析 - 增强版
+            # TXT格式解析
             current_category = None
             line_num = 0
 
-            # 核心修改：定义关键词到分类的映射（按优先级排序）
+            # 关键词到分类的映射
             keyword_categories = [
                 ('4K', '4K频道'),
                 ('CCTV', '央视频道'),
@@ -668,13 +1100,12 @@ def fetch_channels(url):
                 ('海南', '海南地方'),
             ]
 
-            # 尝试从URL中提取可能的默认分类名（仅未匹配关键词时使用）
+            # 提取默认分类
             default_category = "默认分类"
             url_match = re.search(r'/([^/]+?)\.(txt|m3u|m3u8)$', url)
             if url_match:
                 default_category = url_match.group(1)
             else:
-                # 尝试从URL参数中提取
                 param_match = re.search(r'[?&]name=([^&]+)', url)
                 if param_match:
                     default_category = param_match.group(1)
@@ -683,15 +1114,13 @@ def fetch_channels(url):
                 line_num += 1
                 line = line.strip()
 
-                # 跳过空行
                 if not line:
                     continue
 
-                # 如果是简短的注释行，跳过
                 if line.startswith("#") and len(line) < 50 and "," not in line:
                     continue
 
-                # 检查是否为分类行（包含 #genre#）
+                # 分类行处理
                 if "#genre#" in line.lower():
                     parts = line.split(",", 1)
                     if len(parts) >= 2:
@@ -699,13 +1128,11 @@ def fetch_channels(url):
                         channels[current_category] = []
                         logging.debug(f"发现分类: {current_category}")
                     else:
-                        # 处理只有 #genre# 的情况（仍用关键词匹配逻辑）
                         current_category = None
                     continue
 
-                # 处理频道行 - 检测是否有逗号分隔
+                # 频道行处理
                 if "," in line:
-                    # 先检查是否是分类行（如：央视频道,#genre# 但被上面的条件漏掉了）
                     if line.lower().endswith("#genre#"):
                         current_category = line.split(",")[0].strip()
                         channels[current_category] = []
@@ -717,7 +1144,7 @@ def fetch_channels(url):
                         channel_name = parts[0].strip()
                         channel_url = parts[1].strip()
 
-                        # 检查第二部分是否是有效的URL
+                        # 验证URL格式
                         url_pattern = re.compile(
                             r'^(https?|rtp|rtsp|udp)://|'
                             r'^\d{1,3}(\.\d{1,3}){3}:\d+|'
@@ -725,120 +1152,63 @@ def fetch_channels(url):
                         )
 
                         if url_pattern.search(channel_url):
-                            # 清理频道名称中的特殊标记
+                            # 清理频道名称
                             channel_name = re.sub(r'[#].*$', '', channel_name).strip()
 
-                            # 核心修改：无分类时，优先按频道名称关键词匹配分类
+                            # 关键词匹配分类
                             if current_category is None:
                                 matched_category = None
-                                # 按优先级遍历关键词
                                 for keyword, cat in keyword_categories:
                                     if keyword in channel_name:
                                         matched_category = cat
                                         break
-                                # 未匹配到关键词才用默认分类
                                 current_category = matched_category if matched_category else default_category
-                                # 初始化分类（如果不存在）
                                 if current_category not in channels:
                                     channels[current_category] = []
                                 logging.debug(f"根据频道名称匹配分类: {channel_name} → {current_category}")
 
-                            # 如果频道名称为空，从URL提取或使用默认名称
+                            # 补全默认频道名称
                             if not channel_name:
-                                if channel_url:
-                                    # 尝试从URL提取频道名称
-                                    url_name_match = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
-                                    if url_name_match:
-                                        channel_name = url_name_match.group(1)
-                                    else:
-                                        # 从URL中提取IP或域名部分
-                                        host_match = re.search(r'://([^/]+)', channel_url)
-                                        if host_match:
-                                            channel_name = host_match.group(1)
-                                        else:
-                                            channel_name = f"频道_{line_num}"
+                                url_name_match = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
+                                if url_name_match:
+                                    channel_name = url_name_match.group(1)
                                 else:
-                                    channel_name = f"频道_{line_num}"
+                                    host_match = re.search(r'://([^/]+)', channel_url)
+                                    if host_match:
+                                        channel_name = host_match.group(1)
+                                    else:
+                                        channel_name = f"频道_{line_num}"
 
                             # 添加频道
-                            if channel_url:
-                                channels[current_category].append((channel_name, channel_url))
-                                logging.debug(f"添加频道: {channel_name} -> {channel_url[:50]}...")
+                            channels[current_category].append((channel_name, channel_url))
+                            logging.debug(f"添加频道: {channel_name} -> {channel_url[:50]}...")
                         else:
-                            # 可能是一个分类行但没有#genre#
                             potential_category = line.split(",")[0].strip()
-                            if potential_category and len(potential_category) < 50:  # 分类名通常不会太长
+                            if potential_category and len(potential_category) < 50:
                                 current_category = potential_category
                                 channels[current_category] = []
                                 logging.debug(f"发现无标记分类: {current_category}")
                 elif line and re.search(r'^(https?|rtp|rtsp|udp)://|^\d{1,3}(\.\d{1,3}){3}:\d+', line):
-                    # 只有URL，没有逗号分隔
+                    # 纯URL行处理
                     channel_url = line.strip()
-
-                    # 尝试从URL提取频道名称
                     url_name_match = re.search(r'/([^/]+?)(?:\.m3u8|\.ts|\.mp4)?$', channel_url)
                     if url_name_match:
                         channel_name = url_name_match.group(1)
                     else:
-                        # 从URL中提取IP或域名部分
                         host_match = re.search(r'://([^/]+)', channel_url)
                         if host_match:
                             channel_name = host_match.group(1)
                         else:
                             channel_name = f"频道_{line_num}"
 
-                    # 核心修改：无分类时，优先按频道名称关键词匹配分类
                     if current_category is None:
-                        matched_category = None
-                        # 按优先级遍历关键词
-                        for keyword, cat in keyword_categories:
-                            if keyword in channel_name:
-                                matched_category = cat
-                                break
-                        # 未匹配到关键词才用默认分类
-                        current_category = matched_category if matched_category else default_category
-                        # 初始化分类（如果不存在）
+                        current_category = default_category
                         if current_category not in channels:
                             channels[current_category] = []
-                        logging.debug(f"根据频道名称匹配分类: {channel_name} → {current_category}")
-
-                    if channel_url:
-                        channels[current_category].append((channel_name, channel_url))
-                        logging.debug(f"添加未命名频道: {channel_name} -> {channel_url[:50]}...")
-
-        # 统计和日志
-        total_channels = sum(len(ch_list) for ch_list in channels.values())
-        categories = list(channels.keys())
-
-        if total_channels > 0:
-            logging.info(f"url: {url} 爬取成功✅，共 {len(categories)} 个分类，{total_channels} 个频道")
-
-            # 记录每个分类的频道数量
-            for category, ch_list in channels.items():
-                logging.info(f"分类 '{category}': {len(ch_list)} 个频道")
-        else:
-            logging.warning(f"url: {url} 获取到0个频道，可能是格式不支持或内容为空")
-
-            # 如果lines不为空但解析不到频道，记录原始内容的前几行用于调试
-            if lines and len(lines) > 0:
-                logging.warning(f"原始内容前10行:")
-                for i, line in enumerate(lines[:10], 1):
-                    logging.warning(f"行{i}: {line}")
-
-    except requests.RequestException as e:
-        logging.error(f"url: {url} 爬取失败❌, Error: {e}")
-        # 尝试记录响应状态码和内容（如果有）
-        if 'response' in locals():
-            logging.error(f"状态码: {response.status_code}")
-            logging.error(f"响应头: {response.headers}")
-            if hasattr(response, 'text') and response.text:
-                logging.error(f"响应内容前500字符: {response.text[:500]}")
-            else:
-                logging.error("响应内容为空")
+                    channels[current_category].append((channel_name, channel_url))
+                    logging.debug(f"添加纯URL频道: {channel_name} -> {channel_url[:50]}...")
     except Exception as e:
-        logging.error(f"url: {url} 解析时发生意外错误: {e}")
-        import traceback
-        logging.error(traceback.format_exc())
+        logging.error(f"爬取频道失败: {str(e)[:200]}")
 
     return channels
 
@@ -887,7 +1257,7 @@ def updateChannelUrlsM3U(channels, template_channels):
     """保留代码1的M3U/TXT生成功能"""
     written_urls = set()
 
-    current_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    current_date = datetime.now().strftime("%Y-%m-%d")
     for group in config.announcements:
         for announcement in group['entries']:
             if announcement['name'] is None:
