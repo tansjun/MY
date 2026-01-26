@@ -695,7 +695,7 @@ def get_province_multicast_ip_ports(province_input):
         ])
 
         browser = p.chromium.launch(
-            headless=False,  # 生产环境先保持False，排查通过后再改为True
+            headless=True,  # 生产环境先保持False，排查通过后再改为True
             args=chrome_args,
             ignore_default_args=ANTI_DETECTION_CONFIG["ignore_default_args"],
             slow_mo=random.uniform(100, 200),  # 放慢操作速度（从50-150提升到100-200）
