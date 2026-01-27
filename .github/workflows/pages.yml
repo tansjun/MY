@@ -26,28 +26,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      # 新增步骤：创建临时目录，只复制live.txt到该目录（更稳妥）
+      - name: Prepare deploy files
+        run: |
+          mkdir -p ./deploy
+          cp live.txt ./deploy/  # 只复制live.txt到deploy目录
 
-      # 步骤2：设置Node环境（根据你的项目调整版本，如18、20）
-      #- name: Setup Node.js
-      #  uses: actions/setup-node@v4
-      #  with:
-      #    node-version: "20"
-      #    cache: "npm"    # 缓存npm依赖，加速构建
-
-      # 步骤3：安装依赖（如果是纯静态HTML，可删除此步骤）
-      #- name: Install dependencies
-      #  run: npm install  # 若用yarn/pnpm，改为yarn install / pnpm install
-
-      # 步骤4：构建项目（如果是纯静态HTML，可删除此步骤）
-      #- name: Build project
-      #  run: npm run build  # 改为你的构建命令（如yarn build），纯静态HTML则删除
-      
       # 步骤5：直接部署根目录文件（核心：仅部署live.txt所在的根目录）
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./  # 关键：部署根目录（live.txt在根目录）
-          # 可选：仅部署live.txt（过滤其他文件，更精准）
-          # publish_branch: gh-pages  # 部署到gh-pages分支（Pages默认分支）
-          include_assets: 'live.txt' # 只保留live.txt，排除其他所有文件
+          publish_dir: ./deploy  # 部署只包含live.txt的目录
+          publish_branch: gh-pages  # 部署到gh-pages分支（Pages默认分支）
+          force_orphan: true  # 清空gh-pages分支旧内容，避免冗余文件
