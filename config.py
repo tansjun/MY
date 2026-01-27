@@ -1,7 +1,6 @@
 ip_version_priority = "ipv6"
 
 source_urls = [
-    "https://iptv.cqshushu.com/jiekou.php?jk=txt&token=a4659b459f7cfd3dff66e102f223a472",
     "http://iptv.cqshushu.com/?s=153.0.171.163%3A85&t=hotel&channels=1&format=txt"
 ]
 
