@@ -76,10 +76,12 @@ jobs:
         DELAY_MINUTES=$((RANDOM_DELAY / 60))
         DELAY_SECONDS=$((RANDOM_DELAY % 60))
         
-        # 转换为北京时间输出
-        TRIGGER_TIME_UTC="${TRIGGER_HOUR}:${TRIGGER_MINUTE}"
-        TRIGGER_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC" +"%H:%M")
-        EXECUTE_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC + $RANDOM_DELAY seconds" +"%H:%M:%S")
+        # 修复：使用正确的变量名 CRON_HOUR/CRON_MIN，补零保证时间格式正确
+        TRIGGER_TIME_UTC=$(printf "%02d:%02d" "$CRON_HOUR" "$CRON_MIN")
+        # 转换为北京时间（UTC+8）
+        TRIGGER_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC + 8 hours" +"%H:%M")
+        # 计算实际执行的北京时间（触发时间 + 延迟）
+        EXECUTE_TIME_CN=$(date -d "$TRIGGER_TIME_UTC UTC + 8 hours + $RANDOM_DELAY seconds" +"%H:%M:%S")
         
         echo "✅ 触发时北京时间：${TRIGGER_TIME_CN}"
         echo "✅ 本次随机延迟：${DELAY_MINUTES}分${DELAY_SECONDS}秒（总计${RANDOM_DELAY}秒）"
