@@ -50,4 +50,4 @@ jobs:
           publish_dir: ./  # 关键：部署根目录（live.txt在根目录）
           # 可选：仅部署live.txt（过滤其他文件，更精准）
           # publish_branch: gh-pages  # 部署到gh-pages分支（Pages默认分支）
-          exclude_assets: '!live.txt' # 只保留live.txt，排除其他所有文件
+          include_assets: 'live.txt' # 只保留live.txt，排除其他所有文件
