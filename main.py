@@ -1257,7 +1257,7 @@ def updateChannelUrlsM3U(channels, template_channels):
     """保留代码1的M3U/TXT生成功能"""
     written_urls = set()
 
-    current_date = datetime.now().strftime("%Y-%m-%d")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M")
     for group in config.announcements:
         for announcement in group['entries']:
             if announcement['name'] is None:
