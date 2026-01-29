@@ -124,8 +124,11 @@ init_clean_invalid_files()
 # -------------------------- 反爬工具函数 --------------------------
 def human_like_delay():
     """模拟人类思考延迟"""
-    delay = random.expovariate(1 / 1.5)
+    # 改用正态分布生成延迟（更贴近人类操作间隔）
+    delay = random.normalvariate(1.8, 0.8)  # 均值1.8秒，标准差0.8秒
     delay = max(MIN_THINK_DELAY, min(delay, MAX_THINK_DELAY))
+    # 额外添加±20%的随机抖动
+    delay *= random.uniform(0.8, 1.2)
     time.sleep(delay)
     return delay
 
@@ -279,7 +282,7 @@ def generate_human_like_verify_cookie(page):
 
 
 def inject_anti_detection_scripts(page):
-    """注入深度反检测脚本，精准绕过当前验证逻辑"""
+    """注入深度反检测脚本，精准绕过当前验证逻辑（新增Canvas指纹伪装）"""
     anti_detect_script = f"""
         // 1. 彻底屏蔽webdriver属性（覆盖验证脚本的检测逻辑）
         Object.defineProperty(navigator, 'webdriver', {{
@@ -373,9 +376,48 @@ def inject_anti_detection_scripts(page):
 
         // 7. 禁用console调试，避免特征暴露
         console.debug = console.log = console.warn = () => {{}};
+
+        // 8. 随机化Canvas指纹（核心反检测：避免固定Canvas值）
+        const originalCanvasToDataURL = HTMLCanvasElement.prototype.toDataURL;
+        HTMLCanvasElement.prototype.toDataURL = function(type, quality) {{
+            const result = originalCanvasToDataURL.call(this, type, quality);
+            // 随机修改最后几位字符（不影响格式，仅改变指纹）
+            if (result && result.startsWith('data:image/')) {{
+                const randomSuffix = Math.random().toString(36).substr(2, 5);
+                return result.slice(0, -6) + randomSuffix;
+            }}
+            return result;
+        }};
+
+        // 9. 随机化Fonts指纹（模拟不同系统字体）
+        Object.defineProperty(navigator, 'fonts', {{
+            get: () => {{
+                const fontList = [
+                    'Microsoft YaHei', 'SimSun', 'Arial', 'Helvetica', 
+                    'PingFang SC', 'Hiragino Sans GB', 'SimHei'
+                ];
+                return {{
+                    values: () => fontList.map(f => ({{family: f}})),
+                    addEventListener: () => {{}}
+                }};
+            }},
+            configurable: false
+        }});
+
+        // 10. 模拟人类输入延迟（覆盖所有输入事件）
+        const originalInput = HTMLElement.prototype.dispatchEvent;
+        HTMLElement.prototype.dispatchEvent = function(event) {{
+            if (event.type === 'input' || event.type === 'keydown') {{
+                setTimeout(() => {{
+                    originalInput.call(this, event);
+                }}, Math.random() * 200 + 50);
+            }} else {{
+                return originalInput.call(this, event);
+            }}
+        }};
     """
     page.add_init_script(anti_detect_script)
-    logging.info("深度反检测脚本注入完成（适配当前验证逻辑）")
+    logging.info("深度反检测脚本注入完成（含Canvas/Fonts指纹伪装）")
 
 
 def handle_verification_page(page, home_url):
@@ -508,7 +550,7 @@ def randomize_storage_state(storage_path):
         logging.warning(f"随机化storage_state失败：{str(e)[:100]}")
 
 
-def check_storage_reuse_count(storage_path, max_reuse=3):
+def check_storage_reuse_count(storage_path, max_reuse=1):
     """检查storage_state复用次数，达到阈值则删除（增加JSON解析容错）"""
     count_file = "storage_reuse_count.json"
     count_data = {"count": 0}  # 默认值
@@ -624,39 +666,50 @@ def filter_and_sort_multicast_ips(ip_list):
 
 
 def extract_ip_port_from_detail_page(page):
-    """从IP详情页提取IP+端口信息"""
+    """从IP详情页的Meta标签提取真实IP+端口（适配网站隐藏真实IP的策略）"""
     human_like_delay()
     try:
-        page.wait_for_load_state("networkidle", timeout=20000)
+        page.wait_for_load_state("domcontentloaded", timeout=20000)
 
-        # 方式1：精准匹配IP端口标签
-        ip_port_label = page.locator('span.ip-detail-label:text("IP端口:")')
-        if ip_port_label.is_visible():
-            ip_port_value = ip_port_label.locator("..").locator("span.ip-detail-value")
-            ip_port_text = ip_port_value.inner_text().strip()
-            if ip_port_text and ":" in ip_port_text:
-                logging.info(f"详情页提取到IP+端口：{ip_port_text}")
-                return ip_port_text
+        # 1. 获取页面完整HTML源代码（模拟人类查看源代码的逻辑）
+        page_html = page.content()
+        if not page_html:
+            logging.warning("详情页HTML源代码为空")
+            return None
 
-        # 方式2：兜底匹配所有value
-        all_values = page.locator('span.ip-detail-value').all_inner_texts()
-        for value in all_values:
-            if ":" in value and "." in value:
-                logging.info(f"兜底提取到IP+端口：{value.strip()}")
-                return value.strip()
+        # 2. 正则提取Title中的真实IP（格式：IP详情: 103.48.232.250）
+        ip_pattern = r'IP详情:\s*((?:\d{1,3}\.){3}\d{1,3})'
+        ip_match = re.search(ip_pattern, page_html, re.IGNORECASE)
+        real_ip = ip_match.group(1) if ip_match else None
 
-        # 方式3：正则提取
-        page_text = page.inner_text("body")
-        ip_port_match = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b', page_text)
-        if ip_port_match:
-            ip_port_text = ip_port_match.group()
-            logging.info(f"正则提取到IP+端口：{ip_port_text}")
-            return ip_port_text
+        # 3. 正则提取Meta标签中的IP:端口（格式：103.48.232.250:4493）
+        ip_port_pattern = r'((?:\d{1,3}\.){3}\d{1,3}:\d+)'
+        ip_port_matches = re.findall(ip_port_pattern, page_html)
+        real_ip_port = None
 
-        logging.warning("详情页未找到IP+端口信息")
+        # 过滤匹配结果：仅保留和真实IP一致的端口
+        if real_ip and ip_port_matches:
+            for item in ip_port_matches:
+                if item.startswith(real_ip):
+                    real_ip_port = item
+                    break
+        # 兜底：取第一个匹配的IP:端口（防止real_ip提取失败）
+        if not real_ip_port and ip_port_matches:
+            real_ip_port = ip_port_matches[0]
+
+        if real_ip_port:
+            logging.info(f"从Meta标签提取到真实IP+端口：{real_ip_port}")
+            return real_ip_port
+        elif real_ip:
+            logging.warning(f"仅提取到真实IP：{real_ip}，未找到端口")
+            return real_ip
+        else:
+            logging.warning("详情页Meta标签中未找到真实IP/端口")
+            return None
+
     except Exception as e:
-        logging.error(f"提取IP端口失败：{str(e)[:150]}")
-    return None
+        logging.error(f"提取真实IP端口失败：{str(e)[:150]}")
+        return None
 
 
 def get_province_multicast_ip_ports(province_input):
@@ -1257,7 +1310,7 @@ def updateChannelUrlsM3U(channels, template_channels):
     """保留代码1的M3U/TXT生成功能"""
     written_urls = set()
 
-    current_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for group in config.announcements:
         for announcement in group['entries']:
             if announcement['name'] is None:
