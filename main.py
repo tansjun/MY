@@ -748,7 +748,7 @@ def get_province_multicast_ip_ports(province_input):
         ])
 
         browser = p.chromium.launch(
-            headless=True,  # 生产环境先保持False，排查通过后再改为True
+            headless=False,  # 生产环境先保持False，排查通过后再改为True
             args=chrome_args,
             ignore_default_args=ANTI_DETECTION_CONFIG["ignore_default_args"],
             slow_mo=random.uniform(100, 200),  # 放慢操作速度（从50-150提升到100-200）
@@ -838,7 +838,7 @@ def get_province_multicast_ip_ports(province_input):
                 try:
                     human_like_delay()
                     # 模拟人类手动输入网址（先访问about:blank，再输入首页地址）
-                    page.goto("about:blank", wait_until="load", timeout=5000)
+                    page.goto("about:blank", wait_until="networkidle", timeout=5000)
                     human_like_delay()
                     page.evaluate(f'window.location.href = "{home_url}"')  # 用JS模拟手动输入
                     page.wait_for_load_state("networkidle", timeout=60000)
