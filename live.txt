@@ -1,6 +1,6 @@
 公告,#genre#
 更新日期,https://gitlab.com/lr77/IPTV/-/raw/main/%E4%B8%BB%E8%A7%92.mp4
-2026-02-03 10:48:38,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
+2026-02-03 16:12:36,https://gitlab.com/lr77/IPTV/-/raw/main/%E8%B5%B7%E9%A3%8E%E4%BA%86.mp4
 4K频道,#genre#
 CCTV4K,http://112.66.104.248:8888/rtp/239.253.64.48:5140$LR•IPV4『线路1』
 CCTV4K,http://150.255.190.166:65432/rtp/239.254.96.56:7432$LR•IPV4『线路2』
