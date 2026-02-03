@@ -32,16 +32,33 @@ jobs:
       with:
         python-version: '3.10'
 
+    # 新增：缓存Python依赖（核心优化点）
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        # pip缓存路径（Ubuntu系统）
+        path: |
+          ~/.cache/pip
+          # 额外缓存playwright的浏览器二进制文件（可选，进一步提速）
+          ~/.cache/ms-playwright
+        # 缓存key：基于requirements.txt内容哈希，仅当依赖文件变化时重新缓存
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        # 回退策略：匹配同系统的任意pip缓存（可选）
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install system dependencies (适配Ubuntu 22.04+)
       run: |
         sudo apt-get update -y
         sudo apt-get install -y --no-install-recommends libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libatspi2.0-0 libxshmfence-dev libasound2t64 libgtk-3-0 libx11-xcb1 libxcb-dri3-0 libxrandr2 libxcursor1 libxcomposite1 libasound2-plugins libpulse0
-        
+
+    # 修改：从requirements.txt安装依赖（替代手动指定包）
     - name: Install Python dependencies
       run: |
         pip install --upgrade pip
-        pip install requests beautifulsoup4 playwright
-        playwright install chromium --with-deps --force
+        pip install -r requirements.txt
+        # 锁定chromium版本（与playwright 1.42.1匹配）
+        playwright install chromium@119.0.6045.105 --with-deps --force
 
     - name: Generate random delay (区分两次任务)
       if: github.event_name == 'schedule'

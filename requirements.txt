@@ -1,0 +1,7 @@
+# 核心依赖（指定稳定版本）
+requests==2.31.0
+beautifulsoup4==4.12.3
+playwright==1.42.1
+
+# 可选：bs4依赖的解析器（指定版本更稳定）
+#lxml==5.1.0
