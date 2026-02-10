@@ -32,6 +32,7 @@ jobs:
         run: |
           mkdir -p ./deploy
           cp live.txt ./deploy/  # 只复制live.txt到deploy目录
+          cp live_hn.txt ./deploy/
 
       # 步骤5：直接部署根目录文件（核心：仅部署live.txt所在的根目录）
       - name: Deploy to GitHub Pages
