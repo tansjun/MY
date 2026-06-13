@@ -11,7 +11,7 @@ on:
     branches: [ "main" ]  # 改为你的核心分支
     paths: [ # 仅修改以下目录/文件时触发，按需增删
       #"src/**",           # 例如前端源码目录
-      "live.txt" # 仅修改live.txt时触发，避免无关修改触发部署
+      "live_hi.txt" # 仅修改live_hi.txt时触发，避免无关修改触发部署
     ] 
     
 # ========== 构建部署核心逻辑 ==========
@@ -21,24 +21,24 @@ jobs:
     permissions:
       contents: write  # 部署Pages必需的权限
     steps:
-      # 步骤1：拉取仓库代码（包含根目录的live.txt）
+      # 步骤1：拉取仓库代码（包含根目录的live_hi.txt）
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           
-      # 新增步骤：创建临时目录，只复制live.txt到该目录（更稳妥）
+      # 新增步骤：创建临时目录，只复制live_hi.txt到该目录（更稳妥）
       - name: Prepare deploy files
         run: |
           mkdir -p ./deploy
-          cp live.txt ./deploy/  # 只复制live.txt到deploy目录
-          cp live_hn.txt ./deploy/
+          cp live_hi.txt ./deploy/  # 只复制liv_hie.txt到deploy目录
+          cp live.txt ./deploy/
 
-      # 步骤5：直接部署根目录文件（核心：仅部署live.txt所在的根目录）
+      # 步骤5：直接部署根目录文件（核心：仅部署live_hi.txt所在的根目录）
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./deploy  # 部署只包含live.txt的目录
+          publish_dir: ./deploy  # 部署只包含live_hi.txt的目录
           publish_branch: gh-pages  # 部署到gh-pages分支（Pages默认分支）
           force_orphan: true  # 清空gh-pages分支旧内容，避免冗余文件
